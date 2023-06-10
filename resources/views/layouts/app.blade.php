@@ -16,6 +16,15 @@
     </head>
     <body class="font-sans antialiased">
 
+        @if(Auth::user()->role == 'admin')
+            <x-dashboard-layout>
+                {{ $slot }}
+            </x-dashboard-layout>
+        @else
+            <x-dashboard-layout>
+                {{ $slot }}
+            </x-dashboard-layout>
+        @endif
         <x-dashboard-layout>
             {{ $slot }}
         </x-dashboard-layout>

@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnggotaController;
+use App\Http\Controllers\AnggotaJadwalController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JadwalHarianController;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +23,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $user = Auth::user();
+
+    if($user == null) {
+        return redirect('/login');
+    }
+
+    if($user->role == 'admin') {
+        return redirect('/admin');
+    }
+
+    if($user->role == 'anggota') {
+        return redirect('/anggota');
+    }
+
+    return redirect('/login');
 });
 
 Route::get('/dashboard', function () {
@@ -33,12 +49,27 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('lokasi', LokasiController::class);
-    Route::resource('jabatan', JabatanController::class);
-    Route::resource('admin', AdminController::class);
-    Route::resource('anggota', AnggotaController::class);
-    Route::resource('jadwal', JadwalController::class);
-    Route::resource('jadwal-harian', JadwalHarianController::class)->only('update');
+    Route::prefix('/admin')->middleware('admin_only')->group(function() {
+        Route::get('/', function () {
+            return view('root.admin');
+        });
+        Route::resource('lokasi', LokasiController::class);
+        Route::resource('jabatan', JabatanController::class);
+        Route::resource('admin', AdminController::class);
+        Route::resource('anggota', AnggotaController::class);
+        Route::resource('jadwal', JadwalController::class);
+        Route::resource('jadwal-harian', JadwalHarianController::class)->only('update');
+    });
+
+    Route::prefix('/anggota')->middleware('anggota_only')->group(function() {
+        Route::get('/', function() {
+            return view('root.anggota');
+        });
+
+        Route::resource('jadwal-anggota', AnggotaJadwalController::class);
+
+    });
+
 });
 
 require __DIR__.'/auth.php';

@@ -11,7 +11,7 @@ class JadwalHarian extends Model
 
     protected $fillable = ['tanggal', 'jadwal_id', 'anggota_id', 'shift'];
 
-    public function jadwals()
+    public function jadwal()
     {
         return $this->belongsTo(Jadwal::class);
     }

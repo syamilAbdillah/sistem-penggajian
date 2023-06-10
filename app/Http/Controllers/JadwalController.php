@@ -66,8 +66,7 @@ class JadwalController extends Controller
 
         JadwalHarian::insert($entries);
 
-        $all = JadwalHarian::all();
-        ddd($all);
+        return $this->index();
     }
 
     /**
