@@ -69,15 +69,38 @@ class AnggotaController extends Controller
         $anggota->jabatan_id = $validated['jabatan_id'];
         $anggota->save();
 
-        $bulan_ini = date('Y-m');
-        $thn_bulan = explode('-', $bulan_ini);
+        // $bulan_ini = date('Y-m');
+        // $thn_bulan = explode('-', $bulan_ini);
 
-        $total_tanggal = cal_days_in_month(CAL_GREGORIAN, $thn_bulan[1], $thn_bulan[0]);
-        $jadwal = Jadwal::where('bulan', $bulan_ini)->first();
+        // $total_tanggal = cal_days_in_month(CAL_GREGORIAN, $thn_bulan[1], $thn_bulan[0]);
+        // $jadwal = Jadwal::where('bulan', $bulan_ini)->first();
 
-        if($jadwal) {
-            $entries = [];
+        // if($jadwal) {
+        //     $entries = [];
 
+        //     for($tgl = 1; $tgl <= $total_tanggal; $tgl++) {
+        //         $entry = [
+        //             "jadwal_id" => $jadwal->id,
+        //             "anggota_id" => $anggota->id,
+        //             "tanggal" => $tgl,
+        //             "shift" => 'off',
+        //         ];
+
+        //         array_push($entries, $entry);
+        //     }
+
+        //     JadwalHarian::insert($entries);
+        // }
+
+        $jadwals = Jadwal::all();
+        $entries = [];
+
+        foreach($jadwals as $jadwal) {
+            $thn = explode('-' ,$jadwal->bulan)[0];
+            $bulan = explode('-' ,$jadwal->bulan)[1];
+
+            $total_tanggal = cal_days_in_month(CAL_GREGORIAN, $bulan, $thn);
+            
             for($tgl = 1; $tgl <= $total_tanggal; $tgl++) {
                 $entry = [
                     "jadwal_id" => $jadwal->id,
@@ -89,10 +112,9 @@ class AnggotaController extends Controller
                 array_push($entries, $entry);
             }
 
-            JadwalHarian::insert($entries);
         }
 
-
+        JadwalHarian::insert($entries);
 
         return redirect(route('anggota.index'));
     }
