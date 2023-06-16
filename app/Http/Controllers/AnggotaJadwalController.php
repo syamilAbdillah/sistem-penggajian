@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anggota;
 use App\Models\Jadwal;
 use App\Models\JadwalHarian;
 use Illuminate\Http\Request;
@@ -17,18 +18,21 @@ class AnggotaJadwalController extends Controller
         $user = Auth::user();
         $month = date('Y-m');
 
-        $jadwal_harian = JadwalHarian::with([
-            'anggota' => function($query) use ($user) {
-                $query->where('user_id', $user->id);
-            },
-            'jadwal' => function($query) use ($month) {
-                $query->where('bulan', $month);
-            },
-        ])->get();      
+        $anggota = Anggota::where('user_id', $user->id)->first();
+        $jadwal = Jadwal::where('bulan', $month)->first();
+        $list_jadwal = Jadwal::all();
 
-        ddd($jadwal_harian);
+        $list_jadwal_harian = JadwalHarian::where([
+            ['anggota_id', $anggota->id],
+            ['jadwal_id', $jadwal->id],
+        ])->get();
 
-        return view('anggota_jadwal.index');
+        return view('anggota_jadwal.index', [
+            'anggota' => $anggota,
+            'jadwal' => $jadwal,
+            'list_jadwal' => $list_jadwal,
+            'list_jadwal_harian' => $list_jadwal_harian,
+        ]);
     }
 
     /**

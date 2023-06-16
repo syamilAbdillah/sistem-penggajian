@@ -47,7 +47,7 @@
             <label for="my-drawer-2" class="drawer-overlay"></label> 
             <ul class="menu p-4 pt-24 w-72 bg-base-200 text-base-content">
               <!-- Sidebar content here -->
-              <li><a href="{{ route('jadwal.index') }}">Jadwal</a></li>
+              <li><a href="{{ route('jadwal-anggota.index') }}">Jadwal</a></li>
             </ul>
           
           </div>
