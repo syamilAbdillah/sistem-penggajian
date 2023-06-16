@@ -28,4 +28,9 @@ class Anggota extends Model
     {
         return $this->belongsTo(Jabatan::class);
     }
+
+    public function jadwal()
+    {
+        return $this->hasMany(JadwalAnggota::class);
+    }
 }

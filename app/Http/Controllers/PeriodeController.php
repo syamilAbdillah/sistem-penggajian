@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Jadwal;
 use App\Models\Anggota;
 use App\Models\JadwalHarian;
@@ -9,7 +10,7 @@ use App\Models\Periode;
 use DateTime;
 use Illuminate\Http\Request;
 
-class JadwalController extends Controller
+class PeriodeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -60,17 +61,15 @@ class JadwalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Periode $jadwal)
+    public function show(Periode $periode)
     {
-        $periode = $jadwal;
-
         $list_anggota = Anggota::with([
-            'jadwal' => function($query) use ($periode) {
+            ['jadwal' => function($query) use ($periode) {
                 $query->where('periode_id', $periode->id);
-            },
-            'user' => function($query) {
+            }],
+            ['user' => function($query) {
                 $query->orderBy('nama');
-            },
+            }],
         ])->get();
 
 
@@ -83,7 +82,7 @@ class JadwalController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Jadwal $jadwal)
+    public function edit(string $id)
     {
         //
     }
@@ -91,7 +90,7 @@ class JadwalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Jadwal $jadwal)
+    public function update(Request $request, Periode $periode)
     {
         //
     }
@@ -99,7 +98,7 @@ class JadwalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Jadwal $jadwal)
+    public function destroy(Periode $periode)
     {
         //
     }

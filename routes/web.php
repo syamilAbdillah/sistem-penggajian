@@ -5,8 +5,10 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AnggotaJadwalController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\JadwalAnggotaController;
 use App\Http\Controllers\JadwalHarianController;
 use App\Http\Controllers\LokasiController;
+use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -30,11 +32,11 @@ Route::get('/', function () {
     }
 
     if($user->role == 'admin') {
-        return redirect('/admin');
+        return redirect('/lokasi');
     }
 
     if($user->role == 'anggota') {
-        return redirect('/anggota');
+        return redirect('/jadwal-absensi');
     }
 
     return redirect('/login');
@@ -49,7 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::prefix('/admin')->middleware('admin_only')->group(function() {
+    Route::middleware('admin_only')->group(function() {
         Route::get('/', function () {
             return view('root.admin');
         });
@@ -58,15 +60,15 @@ Route::middleware('auth')->group(function () {
         Route::resource('admin', AdminController::class);
         Route::resource('anggota', AnggotaController::class);
         Route::resource('jadwal', JadwalController::class);
-        Route::resource('jadwal-harian', JadwalHarianController::class)->only('update');
+        Route::resource('jadwal-anggota', JadwalAnggotaController::class)->only('update', 'store');
     });
 
-    Route::prefix('/anggota')->middleware('anggota_only')->group(function() {
+    Route::middleware('anggota_only')->group(function() {
         Route::get('/', function() {
             return view('root.anggota');
         });
 
-        Route::resource('jadwal-anggota', AnggotaJadwalController::class);
+        Route::resource('/jadwal-absensi', AnggotaJadwalController::class);
 
     });
 

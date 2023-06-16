@@ -15,12 +15,11 @@
 				@forelse($list_jadwal as $jadwal)
 					<tr>
 						<th>{{ $loop->iteration }}</th>
-						<td>{{ date('F, Y', strtotime($jadwal->bulan)) }}</td>
+						<td>{{ date('F, Y', strtotime($jadwal->dari)) }}</td>
 						<td>
 							<div class="flex gap-2 items-center">
 								<a href="{{ route('jadwal.show', ['jadwal' => $jadwal]) }}" class="btn btn-primary">atur jadwal</a>
 								<a href="#" class="btn btn-error">hapus</a>
-
 							</div>
 						</td>
 					</tr>

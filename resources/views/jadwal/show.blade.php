@@ -1,3 +1,11 @@
+@php
+
+$dari = (int)date("d", strtotime($periode->dari));
+$hingga = (int)date("d", strtotime($periode->hingga));
+$bulan = (int)date("m", strtotime($periode->dari));
+$tahun = (int)date("Y", strtotime($periode->dari));
+@endphp
+
 <x-app-layout>
 	<div class="space-y-6">
 		<div class="overflow-x-auto border rounded-lg">
@@ -5,7 +13,7 @@
 		    <thead>
 		      <tr>
 		        <th>anggota</th>
-		        @for($d = 1; $d <= $total_day; $d++)
+		        @for($d = $dari; $d <= $hingga; $d++)
 			        <th>
 			        	<h1 class="text-center">
 			        	{{$d}}
@@ -15,60 +23,110 @@
 		      </tr>
 		    </thead>
 		    <tbody>
-				@forelse($jadwal_anggota as $ja)
+				@forelse($list_anggota as $anggota)
 					<tr>
-						<th>{{ $ja->user->nama }}</th>
+						<th>{{ $anggota->user->nama }}</th>
+						
+				        @for($d = $dari; $d <= $hingga; $d++)
+					        <td class="border">
+					        	@php
+					        		$jadwal = null;
 
-						@foreach($ja->jadwal_harian as $jh)
-							<td class="border">
-								@if($jh->shift == 'pagi')
-									<button x-data @click.prevent="$dispatch('open-modal', 'create-schedule-{{$jh->id}}')" class="btn btn-primary">{{ $jh->shift }}</button>
-								@elseif($jh->shift == 'siang')
-									<button x-data @click.prevent="$dispatch('open-modal', 'create-schedule-{{$jh->id}}')" class="btn btn-secondary">{{ $jh->shift }}</button>
-								@elseif($jh->shift == 'malam')
-									<button x-data @click.prevent="$dispatch('open-modal', 'create-schedule-{{$jh->id}}')" class="btn btn-accent">{{ $jh->shift }}</button>
-								@else
-									<button x-data @click.prevent="$dispatch('open-modal', 'create-schedule-{{$jh->id}}')" class="btn btn-ghost">{{ $jh->shift }}</button>
-								@endif
 
-								<x-modal name="create-schedule-{{$jh->id}}" focusable>
-									<form action="{{ route('jadwal-harian.update', ['jadwal_harian' => $jh]) }}" class="grid gap-4 p-6" method="post">
-										@method('PATCH')
-										@csrf
+					        		foreach($anggota->jadwal as $j) {
+					        			$tanggal = (int)date('d', strtotime($j->tanggal));
 
-										<x-form-control>
-											<x-label>nama</x-label>
-											<x-text-input value="{{ $ja->user->nama }}" readonly disabled/>
-										</x-form-control>
+					        			if($tanggal == $d) {
+					        				$jadwal = $j;
+					        			}
+					        		}
+					        	@endphp
 
-										<x-form-control>
-											<x-label>tanggal</x-label>
-											@if($jh->tanggal > 9)
-												<x-text-input type="date" value="{{ $jadwal->bulan }}-{{$jh->tanggal}}" readonly disabled/>
-											@else
-												<x-text-input type="date" value="{{ $jadwal->bulan }}-0{{$jh->tanggal}}" readonly disabled/>
-											@endif
-										</x-form-control>
+					        	@if($jadwal == null)
+					        		<button x-data @click.prevent="$dispatch('open-modal', 'create-schedule-{{$anggota->id}}-{{$d}}')" class="btn btn-ghost">off</button>
+					        		<x-modal name="create-schedule-{{$anggota->id}}-{{$d}}" focusable>
+										<form action="{{ route('jadwal-anggota.store') }}" class="grid gap-4 p-6" method="post">
+											@csrf
 
-										<x-form-control>
-											<x-label>shift</x-label>
-											<select name="shift" class="select select-bordered" selected="{{$jh->shift}}">
-												<option @if($jh->shift == 'off') selected @endif value="off">off</option>
-												<option @if($jh->shift == 'pagi') selected @endif value="pagi">pagi</option>
-												<option @if($jh->shift == 'siang') selected @endif value="siang">siang</option>
-												<option @if($jh->shift == 'malam') selected @endif value="malam">malam</option>
-											</select>
-										</x-form-control>
+											<x-form-control>
+												<x-label>nama</x-label>
+												<x-text-input value="{{ $anggota->user->nama }}" readonly disabled/>
+											</x-form-control>
 
-										<div class="flex items-center justify-end gap-2">
-											<button type="reset" class="btn btn-outline">reset</button>
-											<button type="submit" class="btn">submit</button>
-										</div>
+											<x-form-control>
+												<x-label>tanggal</x-label>
+												<x-text-input value="{{ date('d, F Y', mktime(0, 0, 0, $bulan, $d, $tahun)) }}" readonly disabled/>
+											</x-form-control>
 
-									</form>
-								</x-modal>
-							</td>
-						@endforeach
+											<input type="hidden" name="tanggal" value="{{ date('Y-m-d', mktime(0, 0, 0, $bulan, $d, $tahun)) }}">
+											<input type="hidden" name="anggota_id" value={{ $anggota->id }}>
+											<input type="hidden" name="periode_id" value={{ $periode->id }}>
+
+											<x-form-control>
+												<x-label>shift</x-label>
+												<select name="shift" class="select select-bordered">
+													<option selected disabled>pilih shift</option>
+													<option value="pagi">pagi</option>
+													<option value="siang">siang</option>
+													<option value="malam">malam</option>
+												</select>
+											</x-form-control>
+
+											<div class="flex items-center justify-end gap-2">
+												<button type="reset" class="btn btn-outline">reset</button>
+												<button type="submit" class="btn">submit</button>
+											</div>
+
+										</form>
+									</x-modal>
+					        	@else
+						        	@if($jadwal->shift == 'pagi')
+						        		<button x-data @click.prevent="$dispatch('open-modal', 'update-schedule-{{$jadwal->id}}')" class="btn btn-primary">{{ $jadwal->shift }}</button>
+						        	@elseif($jadwal->shift == 'siang')
+						        		<button x-data @click.prevent="$dispatch('open-modal', 'update-schedule-{{$jadwal->id}}')" class="btn btn-secondary">{{ $jadwal->shift }}</button>
+						        	@elseif($jadwal->shift == 'malam')
+						        		<button x-data @click.prevent="$dispatch('open-modal', 'update-schedule-{{$jadwal->id}}')" class="btn btn-accent">{{ $jadwal->shift }}</button>
+						        	@endif
+
+						        	<x-modal name="update-schedule-{{$jadwal->id}}" focusable>
+										<form action="{{ route('jadwal-anggota.update', ['jadwal_anggotum' => $jadwal]) }}" class="grid gap-4 p-6" method="post">
+											@method('put')
+											@csrf
+
+											<x-form-control>
+												<x-label>nama</x-label>
+												<x-text-input value="{{ $anggota->user->nama }}" readonly disabled/>
+											</x-form-control>
+
+											<x-form-control>
+												<x-label>tanggal</x-label>
+												<x-text-input value="{{ date('d, F Y', mktime(0, 0, 0, $bulan, $d, $tahun)) }}" readonly disabled/>
+											</x-form-control>
+
+											<input type="hidden" name="tanggal" value="{{ date('Y-m-d', mktime(0, 0, 0, $bulan, $d, $tahun)) }}">
+											<input type="hidden" name="anggota_id" value={{ $anggota->id }}>
+
+											<input type="hidden" name="periode_id" value={{ $periode->id }}>
+
+											<x-form-control>
+												<x-label>shift</x-label>
+												<select name="shift" class="select select-bordered" >
+													<option value="pagi" @if($jadwal->shift == 'pagi') selected @endif>pagi</option>
+													<option value="siang" @if($jadwal->shift == 'siang') selected @endif>siang</option>
+													<option value="malam" @if($jadwal->shift == 'malam') selected @endif>malam</option>
+												</select>
+											</x-form-control>
+
+											<div class="flex items-center justify-end gap-2">
+												<button type="reset" class="btn btn-outline">reset</button>
+												<button type="submit" class="btn">submit</button>
+											</div>
+
+										</form>
+									</x-modal>
+					        	@endif
+					        </td>
+				        @endfor
 					</tr>
 				@empty
 					<tr>
