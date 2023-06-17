@@ -13,4 +13,9 @@ class JadwalAnggota extends Model
     {
         return $this->belongsTo(Periode::class);
     }
+
+    public function absensi()
+    {
+        return $this->hasOne(Absensi::class);
+    }
 }
