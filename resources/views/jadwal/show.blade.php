@@ -12,17 +12,22 @@ $tahun = (int)date("Y", strtotime($periode->dari));
 		  <table class="table w-full">
 		    <thead>
 		      <tr>
-		        <th>anggota</th>
-		        @for($d = $dari; $d <= $hingga; $d++)
-			        <th>
-			        	<h1 class="text-center">
-			        	{{$d}}
-			        	</h1>
-			        </th>
-		        @endfor
+		        <th colspan="{{ $hingga + 1}}" >
+		        	<h1 class="text-center">tanggal</h1>
+		        </th>
 		      </tr>
 		    </thead>
 		    <tbody>
+		    	<tr>
+		    		<th>Anggota</th>
+		    		@for($d = $dari; $d <= $hingga; $d++)
+				        <td class="border bg-base-300">
+				        	<h1 class="text-center">
+				        	{{ $d }}
+				        	</h1>
+				        </td>
+			        @endfor
+		    	</tr>
 				@forelse($list_anggota as $anggota)
 					<tr>
 						<th>{{ $anggota->user->nama }}</th>
@@ -64,7 +69,7 @@ $tahun = (int)date("Y", strtotime($periode->dari));
 
 											<x-form-control>
 												<x-label>shift</x-label>
-												<select name="shift" class="select select-bordered">
+												<select required name="shift" class="select select-bordered">
 													<option selected disabled>pilih shift</option>
 													<option value="pagi">pagi</option>
 													<option value="siang">siang</option>
@@ -110,7 +115,7 @@ $tahun = (int)date("Y", strtotime($periode->dari));
 
 											<x-form-control>
 												<x-label>shift</x-label>
-												<select name="shift" class="select select-bordered" >
+												<select required name="shift" class="select select-bordered" >
 													<option value="pagi" @if($jadwal->shift == 'pagi') selected @endif>pagi</option>
 													<option value="siang" @if($jadwal->shift == 'siang') selected @endif>siang</option>
 													<option value="malam" @if($jadwal->shift == 'malam') selected @endif>malam</option>

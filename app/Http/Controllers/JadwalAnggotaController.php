@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anggota;
 use App\Models\JadwalAnggota;
+use App\Models\Periode;
 use Illuminate\Http\Request;
 
 class JadwalAnggotaController extends Controller
@@ -28,6 +30,13 @@ class JadwalAnggotaController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            "anggota_id" => "required|exists:".Anggota::class.",id",
+            "periode_id" => "required|exists:".Periode::class.",id",
+            "tanggal" => "required|date",
+            "shift" => "required|in:pagi,siang,malam",
+        ]);
+
         $ja = new JadwalAnggota();
         $ja->anggota_id = $request->input('anggota_id');
         $ja->periode_id = $request->input('periode_id');
@@ -35,7 +44,9 @@ class JadwalAnggotaController extends Controller
         $ja->shift = $request->input('shift');
         $ja->save();
 
-        return redirect('/admin/jadwal/'.$ja->periode_id);
+        $periode = Periode::find($ja->periode->id);
+
+        return redirect(route("jadwal.show", ["jadwal" => $periode]));
     }
 
     /**

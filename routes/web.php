@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AnggotaJadwalController;
 use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\JadwalAbsensiController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JadwalAnggotaController;
 use App\Http\Controllers\JadwalHarianController;
@@ -68,7 +69,7 @@ Route::middleware('auth')->group(function () {
             return view('root.anggota');
         });
 
-        Route::resource('/jadwal-absensi', AnggotaJadwalController::class);
+        Route::resource('jadwal-absensi', JadwalAbsensiController::class);
 
     });
 

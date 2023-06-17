@@ -9,6 +9,7 @@ use App\Models\JadwalHarian;
 use App\Models\Lokasi;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AnggotaController extends Controller
@@ -54,6 +55,8 @@ class AnggotaController extends Controller
             'gaji' => 'numeric|gte:0',
         ]);
 
+
+
         $user = new User();
         $user->nama = $validated['nama'];
         $user->email = $validated['email'];
@@ -69,52 +72,10 @@ class AnggotaController extends Controller
         $anggota->jabatan_id = $validated['jabatan_id'];
         $anggota->save();
 
-        // $bulan_ini = date('Y-m');
-        // $thn_bulan = explode('-', $bulan_ini);
-
-        // $total_tanggal = cal_days_in_month(CAL_GREGORIAN, $thn_bulan[1], $thn_bulan[0]);
-        // $jadwal = Jadwal::where('bulan', $bulan_ini)->first();
-
-        // if($jadwal) {
-        //     $entries = [];
-
-        //     for($tgl = 1; $tgl <= $total_tanggal; $tgl++) {
-        //         $entry = [
-        //             "jadwal_id" => $jadwal->id,
-        //             "anggota_id" => $anggota->id,
-        //             "tanggal" => $tgl,
-        //             "shift" => 'off',
-        //         ];
-
-        //         array_push($entries, $entry);
-        //     }
-
-        //     JadwalHarian::insert($entries);
-        // }
-
-        $jadwals = Jadwal::all();
-        $entries = [];
-
-        foreach($jadwals as $jadwal) {
-            $thn = explode('-' ,$jadwal->bulan)[0];
-            $bulan = explode('-' ,$jadwal->bulan)[1];
-
-            $total_tanggal = cal_days_in_month(CAL_GREGORIAN, $bulan, $thn);
-            
-            for($tgl = 1; $tgl <= $total_tanggal; $tgl++) {
-                $entry = [
-                    "jadwal_id" => $jadwal->id,
-                    "anggota_id" => $anggota->id,
-                    "tanggal" => $tgl,
-                    "shift" => 'off',
-                ];
-
-                array_push($entries, $entry);
-            }
-
-        }
-
-        JadwalHarian::insert($entries);
+        DB::transaction(function() use ($anggota, $user) {
+            $user->save();
+            $anggota->save();
+        });
 
         return redirect(route('anggota.index'));
     }
