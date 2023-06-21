@@ -70,7 +70,23 @@ class JadwalAnggotaController extends Controller
      */
     public function update(Request $request, JadwalAnggota $jadwal_anggotum)
     {
-        //
+        
+        $validated = $request->validate([
+            "shift" => "required|in:pagi,siang,malam,off",
+        ]);
+
+        $periode = Periode::find($jadwal_anggotum->periode_id);
+
+        if($validated['shift'] == 'off') {
+            $jadwal_anggotum->delete();
+
+            return redirect(route("jadwal.show", ["jadwal" => $periode]));
+        }
+
+        $jadwal_anggotum->shift = $validated['shift'];
+        $jadwal_anggotum->save();
+
+        return redirect(route("jadwal.show", ["jadwal" => $periode]));
     }
 
     /**

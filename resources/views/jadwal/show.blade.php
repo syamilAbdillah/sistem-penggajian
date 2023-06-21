@@ -19,7 +19,7 @@ $tahun = (int)date("Y", strtotime($periode->dari));
 		    </thead>
 		    <tbody>
 		    	<tr>
-		    		<th>Anggota</th>
+		    		<th class="bg-base-300">Anggota</th>
 		    		@for($d = $dari; $d <= $hingga; $d++)
 				        <td class="border bg-base-300">
 				        	<h1 class="text-center">
@@ -116,6 +116,7 @@ $tahun = (int)date("Y", strtotime($periode->dari));
 											<x-form-control>
 												<x-label>shift</x-label>
 												<select required name="shift" class="select select-bordered" >
+													<option value="off">off</option>
 													<option value="pagi" @if($jadwal->shift == 'pagi') selected @endif>pagi</option>
 													<option value="siang" @if($jadwal->shift == 'siang') selected @endif>siang</option>
 													<option value="malam" @if($jadwal->shift == 'malam') selected @endif>malam</option>

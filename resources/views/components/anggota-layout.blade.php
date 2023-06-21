@@ -25,13 +25,13 @@
 
             <div class="dropdown dropdown-end">
                 <label tabindex="0" class="btn btn-outline hover:btn-ghost m-1">{{Auth::user()->nama}}</label>
-                <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 border ">
-                    <li><a href="{{route('profile.edit')}}">edit profile</a></li>
-                    <li><form method="post" action="{{route('logout')}}">
+                <div tabindex="0" class="dropdown-content p-2 shadow bg-base-100 rounded-box w-52 border grid gap-2">
+                    <a class="btn btn-ghost" href="{{route('profile.edit')}}">edit profile</a>
+                    <form  method="post" action="{{route('logout')}}" class="inline-flex">
                         @csrf
-                        <button type="submit">logout</button>
-                    </form></li>
-                </ul>
+                        <button class="btn btn-ghost text-error w-full">logout</button>
+                    </form>
+                </div>
             </div>
         </x-navbar>
 

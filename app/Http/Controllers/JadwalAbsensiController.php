@@ -34,7 +34,11 @@ class JadwalAbsensiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'bukti_kehadiran' => 'required|image|size:2048',
+            'kehadiran' => 'required|in:hadir,sakit,izin',
+            'jadwal_anggota_id' => 'required|exists:'.JadwalAnggota::class.',id',
+        ]);
     }
 
     /**
@@ -42,9 +46,9 @@ class JadwalAbsensiController extends Controller
      */
     public function show(Periode $jadwal_absensi)
     {
-        $anggota = Anggota::where('user_id', Auth::user()->id)->first();
+        $anggota = Anggota::with('user')->where('user_id', Auth::user()->id)->first();
 
-        $list_jadwal_anggota = JadwalAnggota::where([
+        $list_jadwal_anggota = JadwalAnggota::with('absensi')->where([
             ['periode_id', $jadwal_absensi->id],
             ['anggota_id', $anggota->id],
         ])->get();

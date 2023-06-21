@@ -21,12 +21,9 @@
                 {{ $slot }}
             </x-dashboard-layout>
         @else
-            <x-dashboard-layout>
+            <x-anggota-layout>
                 {{ $slot }}
-            </x-dashboard-layout>
+            </x-anggota-layout>
         @endif
-        <x-dashboard-layout>
-            {{ $slot }}
-        </x-dashboard-layout>
     </body>
 </html>

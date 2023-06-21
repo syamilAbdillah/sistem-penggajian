@@ -32,15 +32,7 @@ Route::get('/', function () {
         return redirect('/login');
     }
 
-    if($user->role == 'admin') {
-        return redirect('/lokasi');
-    }
-
-    if($user->role == 'anggota') {
-        return redirect('/jadwal-absensi');
-    }
-
-    return redirect('/login');
+    return redirect('/dashboard');
 });
 
 Route::get('/dashboard', function () {
@@ -53,9 +45,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::middleware('admin_only')->group(function() {
-        Route::get('/', function () {
-            return view('root.admin');
-        });
         Route::resource('lokasi', LokasiController::class);
         Route::resource('jabatan', JabatanController::class);
         Route::resource('admin', AdminController::class);
@@ -65,9 +54,6 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('anggota_only')->group(function() {
-        Route::get('/', function() {
-            return view('root.anggota');
-        });
 
         Route::resource('jadwal-absensi', JadwalAbsensiController::class);
 

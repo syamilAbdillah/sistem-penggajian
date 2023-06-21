@@ -8,6 +8,12 @@ use App\Models\User;
 use App\Models\Jabatan;
 use App\Models\Lokasi;
 use App\Models\Anggota;
+use App\Models\Periode;
+use App\Models\JadwalAnggota;
+use DateInterval;
+use DatePeriod;
+use DateTimeZone;
+use DateTime;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -42,8 +48,8 @@ class DatabaseSeeder extends Seeder
         $initJabatan->save();
 
         $initUserAnggota = new User();
-        $initUserAnggota->nama = 'joko cupid';
-        $initUserAnggota->email = 'joko@cupid.com';
+        $initUserAnggota->nama = 'jaka';
+        $initUserAnggota->email = 'jaka@email.com';
         $initUserAnggota->password = Hash::make('password');
         $initUserAnggota->role = 'anggota';
         $initUserAnggota->save();
@@ -58,37 +64,84 @@ class DatabaseSeeder extends Seeder
 
 
 
-        $initMegaChan = new User();
-        $initMegaChan->nama = 'mega chan';
-        $initMegaChan->email = 'mega@xdonut.com';
-        $initMegaChan->password = Hash::make('password');
-        $initMegaChan->role = 'anggota';
-        $initMegaChan->save();
+        $initUser2 = new User();
+        $initUser2->nama = 'joko';
+        $initUser2->email = 'joko@email.com';
+        $initUser2->password = Hash::make('password');
+        $initUser2->role = 'anggota';
+        $initUser2->save();
 
-        $initMega = new Anggota();
-        $initMega->gaji = 8000000;
-        $initMega->nik = '202308080002';
-        $initMega->user_id = $initMegaChan->id;
-        $initMega->jabatan_id = $initJabatan->id;
-        $initMega->lokasi_id = $initLokasi->id;
-        $initMega->save();
+        $initAnggota2 = new Anggota();
+        $initAnggota2->gaji = 8000000;
+        $initAnggota2->nik = '202308080002';
+        $initAnggota2->user_id = $initUser2->id;
+        $initAnggota2->jabatan_id = $initJabatan->id;
+        $initAnggota2->lokasi_id = $initLokasi->id;
+        $initAnggota2->save();
 
 
 
-        $initPuanSama = new User();
-        $initPuanSama->nama = 'puan sama';
-        $initPuanSama->email = 'puan@xdonut.com';
-        $initPuanSama->password = Hash::make('password');
-        $initPuanSama->role = 'anggota';
-        $initPuanSama->save();
+        $initUser3 = new User();
+        $initUser3->nama = 'juki';
+        $initUser3->email = 'juki@email.com';
+        $initUser3->password = Hash::make('password');
+        $initUser3->role = 'anggota';
+        $initUser3->save();
 
-        $initPuan = new Anggota();
-        $initPuan->gaji = 8000000;
-        $initPuan->nik = '202308080003';
-        $initPuan->user_id = $initPuanSama->id;
-        $initPuan->jabatan_id = $initJabatan->id;
-        $initPuan->lokasi_id = $initLokasi->id;
-        $initPuan->save();
+        $initAnggota3 = new Anggota();
+        $initAnggota3->gaji = 8000000;
+        $initAnggota3->nik = '202308080003';
+        $initAnggota3->user_id = $initUser3->id;
+        $initAnggota3->jabatan_id = $initJabatan->id;
+        $initAnggota3->lokasi_id = $initLokasi->id;
+        $initAnggota3->save();
 
+
+
+        $timezone = new DateTimeZone('Asia/Jakarta');
+        
+        $first = new DateTime('now', $timezone);
+        $first->modify('first day of this month');
+
+        $last = new DateTime('now', $timezone);
+        $last->modify('last day of this month');
+
+        $initPeriode = new Periode();
+        $initPeriode->dari = $first->format('Y-m-d');
+        $initPeriode->hingga = $last->format('Y-m-d');
+        $initPeriode->save();
+
+        $interval = DateInterval::createFromDateString('1 day');
+        $daterange = new DatePeriod($first, $interval, $last->add($interval));
+
+        $jadwal_anggota = [];
+
+        foreach($daterange as $curr) {
+            $ja1 = [
+                'anggota_id' => $initAnggota->id,
+                'periode_id' => $initPeriode->id,
+                'shift' => 'pagi',
+                'tanggal' => $curr->format('Y-m-d'),
+            ];
+            array_push($jadwal_anggota, $ja1);
+
+            $ja2 = [
+                'anggota_id' => $initAnggota2->id,
+                'periode_id' => $initPeriode->id,
+                'shift' => 'siang',
+                'tanggal' => $curr->format('Y-m-d'),
+            ];
+            array_push($jadwal_anggota, $ja2);
+
+            $ja3 = [
+                'anggota_id' => $initAnggota3->id,
+                'periode_id' => $initPeriode->id,
+                'shift' => 'malam',
+                'tanggal' => $curr->format('Y-m-d'),
+            ];
+            array_push($jadwal_anggota, $ja3);
+        }
+
+        JadwalAnggota::insert($jadwal_anggota);
     }
 }
