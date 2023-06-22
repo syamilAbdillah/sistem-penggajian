@@ -4,6 +4,16 @@ $dari = (int)date("d", strtotime($periode->dari));
 $hingga = (int)date("d", strtotime($periode->hingga));
 $bulan = (int)date("m", strtotime($periode->dari));
 $tahun = (int)date("Y", strtotime($periode->dari));
+
+$timezone = new DateTimeZone("Asia/Jakarta");
+$start = new DateTime($periode->dari);
+$start->setTimezone($timezone);
+$end = new DateTime($periode->hingga);
+$end->setTimezone($timezone);
+
+$interval = DateInterval::createFromDateString('1 day');
+
+$range = new DatePeriod($start, $interval, $end->add($interval));
 @endphp
 
 <x-app-layout>
@@ -11,45 +21,29 @@ $tahun = (int)date("Y", strtotime($periode->dari));
 		<div class="overflow-x-auto border rounded-lg">
 		  <table class="table w-full">
 		    <thead>
-		      <tr>
-		        <th colspan="{{ $hingga + 1}}" >
-		        	<h1 class="text-center">tanggal</h1>
-		        </th>
-		      </tr>
+		    	<tr>
+		    		<th>Anggota</th>
+		    		@foreach($range as $r)
+				        <th>
+				        	<h1 class="normal-case @if($r->format('D') == 'Sun') text-rose-500 @endif">{{ $r->format('D, d F') }}</h1>
+				        </th>
+			        @endforeach
+		    	</tr>
 		    </thead>
 		    <tbody>
-		    	<tr>
-		    		<th class="bg-base-300">Anggota</th>
-		    		@for($d = $dari; $d <= $hingga; $d++)
-				        <td class="border bg-base-300">
-				        	<h1 class="text-center">
-				        	{{ $d }}
-				        	</h1>
-				        </td>
-			        @endfor
-		    	</tr>
 				@forelse($list_anggota as $anggota)
 					<tr>
 						<th>{{ $anggota->user->nama }}</th>
 						
-				        @for($d = $dari; $d <= $hingga; $d++)
+				        @foreach($range as $r)
 					        <td class="border">
 					        	@php
-					        		$jadwal = null;
-
-
-					        		foreach($anggota->jadwal as $j) {
-					        			$tanggal = (int)date('d', strtotime($j->tanggal));
-
-					        			if($tanggal == $d) {
-					        				$jadwal = $j;
-					        			}
-					        		}
+					        		$jadwal = $anggota->jadwal->where('tanggal', '=', $r->format('Y-m-d'))->first();
 					        	@endphp
 
 					        	@if($jadwal == null)
-					        		<button x-data @click.prevent="$dispatch('open-modal', 'create-schedule-{{$anggota->id}}-{{$d}}')" class="btn btn-ghost">off</button>
-					        		<x-modal name="create-schedule-{{$anggota->id}}-{{$d}}" focusable>
+					        		<button x-data @click.prevent="$dispatch('open-modal', 'create-schedule-{{$anggota->id}}-{{$r->format('Y-m-d')}}')" class="btn btn-ghost">off</button>
+					        		<x-modal name="create-schedule-{{$anggota->id}}-{{$r->format('Y-m-d')}}" focusable>
 										<form action="{{ route('jadwal-anggota.store') }}" class="grid gap-4 p-6" method="post">
 											@csrf
 
@@ -60,10 +54,10 @@ $tahun = (int)date("Y", strtotime($periode->dari));
 
 											<x-form-control>
 												<x-label>tanggal</x-label>
-												<x-text-input value="{{ date('d, F Y', mktime(0, 0, 0, $bulan, $d, $tahun)) }}" readonly disabled/>
+												<x-text-input value="{{ $r->format('d, F Y') }}" readonly disabled/>
 											</x-form-control>
 
-											<input type="hidden" name="tanggal" value="{{ date('Y-m-d', mktime(0, 0, 0, $bulan, $d, $tahun)) }}">
+											<input type="hidden" name="tanggal" value="{{ $r->format('Y-m-d') }}">
 											<input type="hidden" name="anggota_id" value={{ $anggota->id }}>
 											<input type="hidden" name="periode_id" value={{ $periode->id }}>
 
@@ -105,10 +99,10 @@ $tahun = (int)date("Y", strtotime($periode->dari));
 
 											<x-form-control>
 												<x-label>tanggal</x-label>
-												<x-text-input value="{{ date('d, F Y', mktime(0, 0, 0, $bulan, $d, $tahun)) }}" readonly disabled/>
+												<x-text-input value="{{ $r->format('d, F Y') }}" readonly disabled/>
 											</x-form-control>
 
-											<input type="hidden" name="tanggal" value="{{ date('Y-m-d', mktime(0, 0, 0, $bulan, $d, $tahun)) }}">
+											<input type="hidden" name="tanggal" value="{{ $r->format('Y-m-d') }}">
 											<input type="hidden" name="anggota_id" value={{ $anggota->id }}>
 
 											<input type="hidden" name="periode_id" value={{ $periode->id }}>
@@ -132,7 +126,7 @@ $tahun = (int)date("Y", strtotime($periode->dari));
 									</x-modal>
 					        	@endif
 					        </td>
-				        @endfor
+				        @endforeach
 					</tr>
 				@empty
 					<tr>
