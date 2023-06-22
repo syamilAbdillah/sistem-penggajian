@@ -113,13 +113,22 @@
 										    			<option value="sakit">sakit</option>
 										    			<option value="izin">izin</option>
 										    		</select>
+										    		@error('keterangan')
+										    			<label class="label">
+										    				<span class="label-text text-error">{{ $message }}</span>
+										    			</label>
+										    		@enderror
 										    	</x-form-control>
 
 
 										    	<x-form-control>
 										    		<x-label>bukti kehadiran</x-label>
 										    		<input type="file" capture="user" accept="image/*" name="bukti_kehadiran" required class="file-input file-input-bordered"/>	
-
+										    		@error('keterangan')
+										    			<label class="label">
+										    				<span class="label-text text-error">{{ $message }}</span>
+										    			</label>
+										    		@enderror
 										    	</x-form-control>
 											    <div class="modal-action">
 											      <a href="#" class="btn btn-outline">cancel</a>
@@ -130,8 +139,6 @@
 										  <a href="#" class="modal-backdrop"></a>
 										</div>
 									@endif
-
-
 								</td>
 							@endif
 						</tr>
