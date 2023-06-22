@@ -9,11 +9,6 @@ class Anggota extends Model
 {
     use HasFactory;
 
-    public function jadwal_harian()
-    {
-        return $this->hasMany(JadwalHarian::class);
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -32,5 +27,10 @@ class Anggota extends Model
     public function jadwal()
     {
         return $this->hasMany(JadwalAnggota::class);
+    }
+
+    public function jadwal_pengganti()
+    {
+        return $this->hasMany(JadwalPengganti::class);
     }
 }

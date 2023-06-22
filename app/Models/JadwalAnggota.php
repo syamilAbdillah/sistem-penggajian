@@ -18,4 +18,9 @@ class JadwalAnggota extends Model
     {
         return $this->hasOne(Absensi::class);
     }
+
+    public function jadwal_pengganti()
+    {
+        return $this->hasOne(JadwalPengganti::class);
+    }
 }

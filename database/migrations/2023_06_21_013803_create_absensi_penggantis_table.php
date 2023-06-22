@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('absensi_penggantis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('jadwal_pengganti_id')->constrained('jadwal_penggantis')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('anggota_id')->constrained('anggotas')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('periode_id')->constrained('periodes')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->timestamp('jam_masuk');
+            $table->timestamp('jam_keluar');
             $table->timestamps();
         });
     }
