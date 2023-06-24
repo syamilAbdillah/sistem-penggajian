@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jadwal_penggantis', function (Blueprint $table) {
+        Schema::create('absensi_pengganti', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('jadwal_anggota_id')->constrained('jadwal_anggotas')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('anggota_id')->constrained('anggotas')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('jadwal_pengganti_id')->constrained('jadwal_pengganti')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->timestamp('jam_masuk');
+            $table->timestamp('jam_keluar');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jadwal_penggantis');
+        Schema::dropIfExists('absensi_penggantis');
     }
 };

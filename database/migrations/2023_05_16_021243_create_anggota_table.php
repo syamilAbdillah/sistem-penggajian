@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('anggotas', function (Blueprint $table) {
+        Schema::create('anggota', function (Blueprint $table) {
             $table->id();
             $table->string('nik')->unique();
             $table->bigInteger('gaji');
-            $table->foreignId('jabatan_id')->constrained('jabatans', 'id')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('jabatan_id')->constrained('jabatan', 'id')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('user_id')->constrained('users', 'id')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('lokasi_id')->constrained('lokasis', 'id')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('lokasi_id')->constrained('lokasi', 'id')->onUpdate('cascade')->onDelete('restrict');
             $table->timestamps();
         });
     }

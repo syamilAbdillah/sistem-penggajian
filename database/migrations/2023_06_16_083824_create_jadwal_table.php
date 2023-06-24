@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jadwal_anggotas', function (Blueprint $table) {
+        Schema::create('jadwal', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('periode_id')->constrained('periodes')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('anggota_id')->constrained('anggotas')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('periode_id')->constrained('periode')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('anggota_id')->constrained('anggota')->onUpdate('cascade')->onDelete('cascade');
             $table->enum('shift', ['pagi', 'siang', 'malam']);
             $table->date('tanggal');
             $table->timestamps();

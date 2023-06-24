@@ -9,7 +9,7 @@ use App\Models\Jabatan;
 use App\Models\Lokasi;
 use App\Models\Anggota;
 use App\Models\Periode;
-use App\Models\JadwalAnggota;
+use App\Models\Jadwal;
 use DateInterval;
 use DatePeriod;
 use DateTimeZone;
@@ -142,6 +142,6 @@ class DatabaseSeeder extends Seeder
             array_push($jadwal_anggota, $ja3);
         }
 
-        JadwalAnggota::insert($jadwal_anggota);
+        Jadwal::insert($jadwal_anggota);
     }
 }

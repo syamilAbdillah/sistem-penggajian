@@ -9,6 +9,8 @@ class Anggota extends Model
 {
     use HasFactory;
 
+    protected $table = 'anggota';
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -16,21 +18,21 @@ class Anggota extends Model
 
     public function lokasi()
     {
-        return $this->belongsTo(Lokasi::class);
+        return $this->belongsTo(Lokasi::class, 'lokasi_id', 'id');
     }
 
     public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class);
+        return $this->belongsTo(Jabatan::class, 'jabatan_id', 'id');
     }
 
     public function jadwal()
     {
-        return $this->hasMany(JadwalAnggota::class);
+        return $this->hasMany(Jadwal::class, 'anggota_id', 'id');
     }
 
     public function jadwal_pengganti()
     {
-        return $this->hasMany(JadwalPengganti::class);
+        return $this->hasMany(JadwalPengganti::class, 'anggota_id', 'id');
     }
 }

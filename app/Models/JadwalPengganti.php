@@ -9,13 +9,15 @@ class JadwalPengganti extends Model
 {
     use HasFactory;
 
-    public function jadwal_anggota() 
+    protected $table = 'jadwal_pengganti';
+
+    public function jadwal() 
     {
-        return $this->belongsTo(JadwalAnggota::class);
+        return $this->belongsTo(Jadwal::class, 'jadwal_id', 'id');
     }
 
     public function anggota()
     {
-        return $this->belongsTo(Anggota::class);
+        return $this->belongsTo(Anggota::class, 'anggota_id', 'id');
     }
 }

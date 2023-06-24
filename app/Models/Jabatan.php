@@ -10,9 +10,10 @@ class Jabatan extends Model
     use HasFactory;
 
     protected $fillable = ['nama_jabatan'];
+    protected $table  = 'jabatan';
 
     public function anggota()
     {
-        return $this->hasOne(Anggota::class);
+        return $this->hasOne(Anggota::class, 'jabatan_id', 'id');
     }
 }

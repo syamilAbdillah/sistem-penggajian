@@ -9,8 +9,10 @@ class Absensi extends Model
 {
     use HasFactory;
 
-    public function jadwal_anggota()
+    protected $table = 'absensi';
+
+    public function jadwal()
     {
-        return $this->belongsTo(JadwalAnggota::class);
+        return $this->belongsTo(Jadwal::class, 'jadwal_id', 'id');
     }
 }

@@ -9,8 +9,10 @@ class Periode extends Model
 {
     use HasFactory;
 
+    protected $table = 'periode';
+
     public function jadwal()
     {
-        return $this->hasMany(JadwalAnggota::class);
+        return $this->hasMany(Jadwal::class, 'periode_id', 'id');
     }
 }

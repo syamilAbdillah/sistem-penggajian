@@ -9,8 +9,20 @@ class Jadwal extends Model
 {
     use HasFactory;
 
-    public function jadwal_harians() 
+    protected $table = 'jadwal';
+
+    public function periode()
     {
-        return $this->hasMany(JadwalHarian::class);
+        return $this->belongsTo(Periode::class, 'periode_id', 'id');
+    }
+
+    public function absensi()
+    {
+        return $this->hasOne(Absensi::class, 'jadwal_id', 'id');
+    }
+
+    public function jadwal_pengganti()
+    {
+        return $this->hasOne(JadwalPengganti::class, 'jadwal_id', 'id');
     }
 }

@@ -10,9 +10,10 @@ class Lokasi extends Model
     use HasFactory;
 
     protected $fillable = ['nama_lokasi', 'alamat'];
+    protected $table = 'lokasi';
 
     public function anggota()
     {
-        return $this->hasOne(Anggota::class);
+        return $this->hasOne(Anggota::class, 'lokasi_id', 'id');
     }
 }
