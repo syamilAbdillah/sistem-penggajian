@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absensi;
 use App\Models\Anggota;
 use App\Models\Periode;
-use App\Models\JadwalAnggota;
+use App\Models\Jadwal;
+use DateTimeZone, DateTime, DateInterval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,9 +17,9 @@ class JadwalAbsensiController extends Controller
      */
     public function index()
     {
-        $list_jadwal = Periode::orderByDesc('dari')->get();
+        $list_periode = Periode::orderByDesc('dari')->get();
         return view('jadwal_absensi.index', [
-            'list_jadwal' => $list_jadwal,
+            'list_periode' => $list_periode,
         ]);
     }
 
@@ -35,10 +37,33 @@ class JadwalAbsensiController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'bukti_kehadiran' => 'required|image|size:2048',
-            'kehadiran' => 'required|in:hadir,sakit,izin',
-            'jadwal_anggota_id' => 'required|exists:'.JadwalAnggota::class.',id',
+            'bukti_kehadiran' => 'required|image|max:2048',
+            'keterangan' => 'required|in:hadir,sakit,izin',
+            'jadwal_id' => 'required|exists:'.Jadwal::class.',id',
         ]);
+
+        $user = Auth::user();
+        $anggota = Anggota::where('user_id', $user->id)->first();
+
+        $filename = $request->file('bukti_kehadiran')->store();
+
+        $timezone = new DateTimeZone('Asia/Jakarta');
+        $now = new DateTime('now', $timezone);
+        $interval = DateInterval::createFromDateString('8 hours');
+
+        $absensi  = new Absensi();
+        $absensi->jadwal_id = $validated['jadwal_id'];
+        $absensi->anggota_id = $anggota->id;
+        $absensi->keterangan = $validated['keterangan'];
+        $absensi->bukti_kehadiran = "/storage/".$filename;
+        $absensi->jam_masuk = $now->getTimestamp();
+        $absensi->jam_keluar = $now->add($interval)->getTimestamp();
+        $absensi->save();
+
+        $jadwal = Jadwal::find($validated['jadwal_id']);
+
+        return redirect(route('jadwal-absensi.show', ['jadwal_absensi' => $jadwal->periode]))
+            ->with('success', 'berhasil absen');
     }
 
     /**
@@ -48,24 +73,24 @@ class JadwalAbsensiController extends Controller
     {
         $anggota = Anggota::with('user')->where('user_id', Auth::user()->id)->first();
 
-        $list_jadwal_anggota = JadwalAnggota::with('absensi')->where([
+        $list_jadwal = Jadwal::with('absensi')->where([
             ['periode_id', $jadwal_absensi->id],
             ['anggota_id', $anggota->id],
         ])->get();
 
         return view('jadwal_absensi.show', [
-            "jadwal" => $jadwal_absensi,
+            "periode" => $jadwal_absensi,
             "anggota" => $anggota,
-            "list_jadwal_anggota" => $list_jadwal_anggota,
+            "list_jadwal" => $list_jadwal,
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Absensi $absensi)
     {
-        //
+        
     }
 
     /**

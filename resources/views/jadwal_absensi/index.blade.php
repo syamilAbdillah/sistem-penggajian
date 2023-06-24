@@ -12,13 +12,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					@forelse($list_jadwal as $jadwal) 
+					@forelse($list_periode as $periode) 
 						<tr>
 							<td>{{ $loop->iteration }}</td>
-							<td>{{ (new DateTime($jadwal->dari))->format('F') }}</td>
-							<td>{{ (new DateTime($jadwal->dari))->format('Y') }}</td>
+							<td>{{ (new DateTime($periode->dari))->format('F') }}</td>
+							<td>{{ (new DateTime($periode->dari))->format('Y') }}</td>
 							<td>
-								<a href="{{ route('jadwal-absensi.show', ['jadwal_absensi' => $jadwal]) }}" class="btn btn-link">detil</a>
+								<a href="{{ route('jadwal-absensi.show', ['jadwal_absensi' => $periode]) }}" class="btn btn-link">detil</a>
 							</td>
 							
 						</tr>

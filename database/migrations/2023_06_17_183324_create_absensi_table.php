@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('jadwal_id')->constrained('jadwal')->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('anggota_id')->constrained('anggota')->cascadeOnDelete()->cascadeOnUpdate();
             $table->enum('keterangan', ['hadir', 'sakit', 'izin']);
+            $table->text('bukti_kehadiran');
             $table->timestamp('jam_masuk');
             $table->timestamp('jam_keluar');
             $table->timestamps();

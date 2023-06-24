@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anggota;
-use App\Models\JadwalAnggota;
+use App\Models\Jadwal;
 use App\Models\Periode;
 use Illuminate\Http\Request;
 
@@ -30,21 +30,21 @@ class JadwalAnggotaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             "anggota_id" => "required|exists:".Anggota::class.",id",
             "periode_id" => "required|exists:".Periode::class.",id",
             "tanggal" => "required|date",
             "shift" => "required|in:pagi,siang,malam",
         ]);
 
-        $ja = new JadwalAnggota();
-        $ja->anggota_id = $request->input('anggota_id');
-        $ja->periode_id = $request->input('periode_id');
-        $ja->tanggal = $request->input('tanggal');
-        $ja->shift = $request->input('shift');
-        $ja->save();
+        $jadwal = new Jadwal();
+        $jadwal->anggota_id = $validated['anggota_id'];
+        $jadwal->periode_id = $validated['periode_id'];
+        $jadwal->tanggal = $validated['tanggal'];
+        $jadwal->shift = $validated['shift'];
+        $jadwal->save();
 
-        $periode = Periode::find($ja->periode->id);
+        $periode = Periode::find($jadwal->periode->id);
 
         return redirect(route("jadwal.show", ["jadwal" => $periode]));
     }
@@ -68,7 +68,7 @@ class JadwalAnggotaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, JadwalAnggota $jadwal_anggotum)
+    public function update(Request $request, Jadwal $jadwal_anggotum)
     {
         
         $validated = $request->validate([

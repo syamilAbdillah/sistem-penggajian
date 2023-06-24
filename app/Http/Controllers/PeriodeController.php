@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Absensi;
 use App\Models\Jadwal;
 use App\Models\Anggota;
 use App\Models\JadwalHarian;
@@ -82,7 +82,7 @@ class PeriodeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Absensi $absensi)
     {
         //
     }

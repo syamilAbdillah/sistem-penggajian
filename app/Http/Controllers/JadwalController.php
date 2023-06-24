@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Jadwal;
 use App\Models\Anggota;
-use App\Models\JadwalHarian;
 use App\Models\Periode;
-use DateTime;
+use DateTime, DateTimeZone;
 use Illuminate\Http\Request;
 
 class JadwalController extends Controller
@@ -36,11 +35,15 @@ class JadwalController extends Controller
      */
     public function store(Request $request)
     {
-        // TODO:
-        //      - should be validated !!
+        $validated = $request->validate([
+            'bulan' => 'required|string'
+        ]);
 
-        $date = date("Y-m-d", strtotime($request->input('bulan')));
-        $dateTime = new DateTime($date);
+
+        $timezone = new DateTimeZone('Asia/Jakarta');
+        $strtime = strtotime($validated['bulan']);
+        $date = date("Y-m-d", $strtime);
+        $dateTime = new DateTime($date, $timezone);
 
         $dateTime->modify("first day of this month");
         $dari = $dateTime->format("Y-m-d");
