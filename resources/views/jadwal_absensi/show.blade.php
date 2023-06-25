@@ -71,10 +71,12 @@
 										(int)$current_date->format('d') > (int)$now->format('d'))
 
 										<span class="badge badge-lg badge-ghost italic">belum tersedia</span>
-									@elseif($jadwal_anggota->absensi != null && $jadwal_anggota->absensi->keterangan == 'hadir')
-										<span class="badge badge-lg badge-neutral">hadir</span>
-									@elseif($jadwal_anggota->absensi != null && $jadwal_anggota->absensi->keterangan == 'sakit' || $jadwal_anggota->absensi->keterangan == 'izin')
-										<span class="badge badge-lg badge-warning">{{ $jadwal_anggota->absensi->kehadiran }}</span>
+									@elseif($jadwal_anggota->absensi != null)
+										@if($jadwal_anggota->absensi != null && $jadwal_anggota->absensi->keterangan == 'hadir')
+											<span class="badge badge-lg badge-neutral">hadir</span>
+										@else($jadwal_anggota->absensi != null && $jadwal_anggota->absensi->keterangan == 'sakit' || $jadwal_anggota->absensi->keterangan == 'izin')
+											<span class="badge badge-lg badge-warning">{{ $jadwal_anggota->absensi->kehadiran }}</span>
+										@endif
 									@else
 										<a href="#{{$jadwal_anggota->tanggal}}" class="btn">isi absensi</a>
 										<!-- Put this part before </body> tag -->
