@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
 
         $initJabatan = new Jabatan();
         $initJabatan->nama_jabatan = 'anggota';
+        $initJabatan->gaji = 8000000;
         $initJabatan->save();
 
         $initUserAnggota = new User();
@@ -55,7 +56,6 @@ class DatabaseSeeder extends Seeder
         $initUserAnggota->save();
 
         $initAnggota = new Anggota();
-        $initAnggota->gaji = 8000000;
         $initAnggota->nik = '202308080001';
         $initAnggota->user_id = $initUserAnggota->id;
         $initAnggota->jabatan_id = $initJabatan->id;
@@ -72,7 +72,6 @@ class DatabaseSeeder extends Seeder
         $initUser2->save();
 
         $initAnggota2 = new Anggota();
-        $initAnggota2->gaji = 8000000;
         $initAnggota2->nik = '202308080002';
         $initAnggota2->user_id = $initUser2->id;
         $initAnggota2->jabatan_id = $initJabatan->id;
@@ -89,7 +88,6 @@ class DatabaseSeeder extends Seeder
         $initUser3->save();
 
         $initAnggota3 = new Anggota();
-        $initAnggota3->gaji = 8000000;
         $initAnggota3->nik = '202308080003';
         $initAnggota3->user_id = $initUser3->id;
         $initAnggota3->jabatan_id = $initJabatan->id;

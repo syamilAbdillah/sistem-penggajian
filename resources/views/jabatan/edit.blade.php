@@ -14,6 +14,16 @@
 				<x-error-label>{{ $message }}</x-error-label>
 			@enderror
 		</x-form-control>
+
+
+
+		<x-form-control>
+			<x-label>gaji</x-label>
+			<x-text-input name="gaji" type="number" value="{{ $jabatan->gaji }}"/>
+			@error('gaji')
+				<x-error-label>{{ $message }}</x-error-label>
+			@enderror
+		</x-form-control>
 		<div class="flex justify-end items-center gap-4">
 			<button type="reset" class="btn btn-primary-outlite">reset</button>
 			<button type="submit" class="btn btn-primary">submit</button>

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('anggota', function (Blueprint $table) {
             $table->id();
             $table->string('nik')->unique();
-            $table->bigInteger('gaji');
             $table->foreignId('jabatan_id');
             $table->foreignId('user_id');
             $table->foreignId('lokasi_id');

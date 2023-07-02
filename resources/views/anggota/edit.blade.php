@@ -43,16 +43,6 @@
 				</select>
 			</x-form-control>
 
-
-
-			<x-form-control class="lg:col-span-2">
-				<x-label>gaji</x-label>
-				<x-text-input name="gaji" type="number" value="{{ $anggota->gaji }}" placeholder="nama anggota"/>
-				@error('gaji')
-					<x-error-label>{{ $message }}</x-error-label>
-				@enderror
-			</x-form-control>
-
 			<div class="flex items-center justify-end gap-4 lg:col-span-2">
 				<button type="reset" class="btn btn-outline">reset</button>
 				<button type="submit" class="btn">submit</button>

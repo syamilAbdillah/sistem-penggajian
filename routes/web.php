@@ -13,6 +13,7 @@ use App\Http\Controllers\JadwalLemburController;
 use App\Http\Controllers\JadwalPenggantiController;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\PeriodeController;
+use App\Http\Controllers\PotonganGajiController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -54,6 +55,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('anggota', AnggotaController::class);
         Route::resource('jadwal', JadwalController::class);
         Route::resource('jadwal-anggota', JadwalAnggotaController::class)->only('update', 'store');
+        Route::resource('potongan-gaji', PotonganGajiController::class);
         Route::get('/absensi-anggota', [AbsensiAnggota::class, 'index'])->name('list-absensi-anggota');
         Route::get('/absensi-anggota/{jadwal}/pengganti/create', [JadwalPenggantiController::class, 'create'])->name("create-jadwal-pengganti");
         Route::post('/absensi-anggota/{jadwal}/pengganti/create', [JadwalPenggantiController::class, 'store'])->name("store-jadwal-pengganti");

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absensi;
+use App\Models\AbsensiPengganti;
 use App\Models\Jadwal;
 use App\Models\Anggota;
 use App\Models\JadwalPengganti;
@@ -56,13 +58,16 @@ class JadwalPenggantiController extends Controller
     {
         $pengganti = Anggota::with('user')->where('id', $jadwal_pengganti->anggota_id)->first();
         $anggota =  Anggota::with('user')->where('id', $jadwal->anggota_id)->first();
-
+        $absensi = Absensi::where('jadwal_id', $jadwal->id)->first();
+        $absensi_pengganti = AbsensiPengganti::where('jadwal_pengganti_id', $jadwal_pengganti->id)->first();
 
         return view('jadwal_pengganti.show', [
             'jadwal' => $jadwal,
             'jadwal_pengganti' => $jadwal_pengganti,
             'anggota' => $anggota,
             'pengganti' => $pengganti,
+            'absensi' => $absensi,
+            'absensi_pengganti' => $absensi_pengganti,
         ]);
     }
 

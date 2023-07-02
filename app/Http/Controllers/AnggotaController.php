@@ -52,7 +52,6 @@ class AnggotaController extends Controller
             'password' => 'string|required|confirmed',
             'jabatan_id' => 'numeric|required|exists:'.Jabatan::class.',id',
             'lokasi_id' => 'required|numeric|exists:'.Lokasi::class.',id',
-            'gaji' => 'numeric|gte:0',
         ]);
 
 
@@ -66,7 +65,6 @@ class AnggotaController extends Controller
 
         $anggota = new Anggota();
         $anggota->nik = $validated['nik'];
-        $anggota->gaji = $validated['gaji'];
         $anggota->user_id = $user->id;
         $anggota->lokasi_id = $validated['lokasi_id'];
         $anggota->jabatan_id = $validated['jabatan_id'];
@@ -119,7 +117,6 @@ class AnggotaController extends Controller
 
         $anggotum->jabatan_id = $validated['jabatan_id'];
         $anggotum->lokasi_id = $validated['lokasi_id'];
-        $anggotum->gaji = $validated['gaji'];
         
         $user = $anggotum->user;
         $user->nama = $validated['nama'];
