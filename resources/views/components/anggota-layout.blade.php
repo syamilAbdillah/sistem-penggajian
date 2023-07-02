@@ -48,6 +48,7 @@
             <ul class="menu p-4 pt-24 w-72 bg-base-200 text-base-content">
               <!-- Sidebar content here -->
               <li><a href="{{route('jadwal-absensi.index')}}">Jadwal</a></li>
+              <li><a href="{{route('list-jadwal-lembur')}}">Jadwal lembur</a></li>
             </ul>
           
           </div>

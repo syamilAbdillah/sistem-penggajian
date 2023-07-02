@@ -20,4 +20,9 @@ class JadwalPengganti extends Model
     {
         return $this->belongsTo(Anggota::class, 'anggota_id', 'id');
     }
+
+    public function absensi_pengganti()
+    {
+        return $this->hasOne(AbsensiPengganti::class, 'jadwal_pengganti_id', 'id');
+    }
 }

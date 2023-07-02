@@ -9,6 +9,7 @@ use App\Http\Controllers\JadwalAbsensiController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JadwalAnggotaController;
 use App\Http\Controllers\JadwalHarianController;
+use App\Http\Controllers\JadwalLemburController;
 use App\Http\Controllers\JadwalPenggantiController;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\PeriodeController;
@@ -62,6 +63,10 @@ Route::middleware('auth')->group(function () {
     Route::middleware('anggota_only')->group(function() {
 
         Route::resource('jadwal-absensi', JadwalAbsensiController::class);
+        Route::get('/jadwal-lembur', [JadwalLemburController::class, 'index'])->name('list-jadwal-lembur');
+        Route::get('/jadwal-lembur/{jadwal_pengganti}/create', [JadwalLemburController::class, 'create'])->name('create-jadwal-lembur');
+        Route::post('/jadwal-lembur/{jadwal_pengganti}', [JadwalLemburController::class, 'store'])->name('store-jadwal-lembur');
+
 
     });
 

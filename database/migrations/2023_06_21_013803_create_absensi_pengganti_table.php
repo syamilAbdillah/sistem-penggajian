@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('absensi_pengganti', function (Blueprint $table) {
             $table->id();
             $table->foreignId('jadwal_pengganti_id');
+            $table->string('bukti_kehadiran');
             $table->timestamp('jam_masuk');
             $table->timestamp('jam_keluar');
             $table->timestamps();
