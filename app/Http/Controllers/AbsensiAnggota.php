@@ -18,7 +18,7 @@ class AbsensiAnggota extends Controller
         $periode = Periode::find($periode_id);
 
         if($anggota != null && $periode != null) {
-            $list_jadwal = Jadwal::with('absensi')->where([
+            $list_jadwal = Jadwal::with('absensi', 'jadwal_pengganti')->where([
                     'anggota_id' => $anggota->id,
                     'periode_id' => $periode->id,
                 ])

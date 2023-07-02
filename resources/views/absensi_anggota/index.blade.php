@@ -41,6 +41,7 @@
 						<th>shift</th>
 						<th>keterangan</th>
 						<th>detail</th>
+						<th>pengganti</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -102,6 +103,66 @@
 									    </div>
 									  </label>
 									</label>
+								@endif
+							</td>
+							<td>
+								@if($jadwal->absensi == null && $datetime->getTimestamp() <= time())
+
+									@php 
+										$timezone = new DateTimeZone('Asia/Jakarta');
+										$jam_keluar = new DateTime($jadwal->tanggal, $timezone); 
+
+										if($jadwal->shift == 'pagi') {
+											$jam_keluar->setTime(7, 0);
+										}
+
+										if($jadwal->shift == 'siang') {
+											$jam_keluar->setTime(15, 0);
+										}
+
+										if($jadwal->shift == 'malam') {
+											$jam_keluar->setTime(23, 0);
+										}
+
+
+										$interval = DateInterval::createFromDateString('8 hours');
+										$jam_keluar->add($interval);
+
+									@endphp
+									@if($jam_keluar->getTimestamp() > time())
+										<a href="{{ route('create-jadwal-pengganti', ['jadwal' => $jadwal]) }}" class="btn btn-link">buat pengganti</a>
+									@elseif($jadwal->pengganti != null)
+										<span>ada pengganti</span>
+									@else
+										<span class="badge badge-lg badge-error">Tidak ada pengganti</span>
+									@endif
+								@endif
+								@if($jadwal->absensi != null && $jadwal->absensi->keterangan != 'hadir')
+
+									@php 
+										$timezone = new DateTimeZone('Asia/Jakarta');
+										$jam_masuk = new DateTime($jadwal->tanggal, $timezone); 
+
+										if($jadwal->shift == 'pagi') {
+											$jam_masuk->setTime(7, 0);
+										}
+
+										if($jadwal->shift == 'siang') {
+											$jam_masuk->setTime(15, 0);
+										}
+
+										if($jadwal->shift == 'malam') {
+											$jam_masuk->setTime(23, 0);
+										}
+
+									@endphp
+									@if($jam_masuk->getTimestamp() > time() && $jadwal->jadwal_pengganti == null)
+										<a href="{{ route('create-jadwal-pengganti', ['jadwal' => $jadwal]) }}" class="btn btn-link">buat pengganti</a>
+									@elseif($jadwal->jadwal_pengganti != null)
+										<a href="{{ route('detail-jadwal-pengganti', [ 'jadwal_pengganti' => $jadwal->jadwal_pengganti, 'jadwal' => $jadwal]) }}" class="btn btn-link">detail pengganti</a>
+									@else
+										<span class="badge badge-lg badge-error">Tidak ada pengganti</span>
+									@endif
 								@endif
 							</td>
 						</tr>

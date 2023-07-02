@@ -16,6 +16,11 @@ class Jadwal extends Model
         return $this->belongsTo(Periode::class, 'periode_id', 'id');
     }
 
+    public function anggota()
+    {
+        return $this->belongsTo(Anggota::class, 'anggota_id', 'id');
+    }
+
     public function absensi()
     {
         return $this->hasOne(Absensi::class, 'jadwal_id', 'id');

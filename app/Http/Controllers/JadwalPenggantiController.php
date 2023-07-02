@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jadwal;
+use App\Models\Anggota;
 use App\Models\JadwalPengganti;
 use Illuminate\Http\Request;
 
@@ -18,25 +20,50 @@ class JadwalPenggantiController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Jadwal $jadwal)
     {
-        //
+        $anggota = Anggota::with('user')->where('id', $jadwal->anggota_id)->first();
+        $list_anggota = Anggota::with('user')->get();
+
+        return view('jadwal_pengganti.create', [
+            'jadwal' => $jadwal,
+            'anggota' => $anggota,
+            'list_anggota' => $list_anggota,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Jadwal $jadwal)
     {
-        //
+        $validated = $request->validate([
+            'anggota_id' => 'required|exists:'.Jadwal::class.',id'
+        ]);
+
+        $jp = new JadwalPengganti();
+        $jp->jadwal_id = $jadwal->id;
+        $jp->anggota_id = $validated['anggota_id'];
+        $jp->save();
+
+        return redirect(route('list-absensi-anggota'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(JadwalPengganti $jadwalPengganti)
+    public function show(Jadwal $jadwal, JadwalPengganti $jadwal_pengganti)
     {
-        //
+        $pengganti = Anggota::with('user')->where('id', $jadwal_pengganti->anggota_id)->first();
+        $anggota =  Anggota::with('user')->where('id', $jadwal->anggota_id)->first();
+
+
+        return view('jadwal_pengganti.show', [
+            'jadwal' => $jadwal,
+            'jadwal_pengganti' => $jadwal_pengganti,
+            'anggota' => $anggota,
+            'pengganti' => $pengganti,
+        ]);
     }
 
     /**

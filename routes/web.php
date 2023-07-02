@@ -9,6 +9,7 @@ use App\Http\Controllers\JadwalAbsensiController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\JadwalAnggotaController;
 use App\Http\Controllers\JadwalHarianController;
+use App\Http\Controllers\JadwalPenggantiController;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\ProfileController;
@@ -53,6 +54,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('jadwal', JadwalController::class);
         Route::resource('jadwal-anggota', JadwalAnggotaController::class)->only('update', 'store');
         Route::get('/absensi-anggota', [AbsensiAnggota::class, 'index'])->name('list-absensi-anggota');
+        Route::get('/absensi-anggota/{jadwal}/pengganti/create', [JadwalPenggantiController::class, 'create'])->name("create-jadwal-pengganti");
+        Route::post('/absensi-anggota/{jadwal}/pengganti/create', [JadwalPenggantiController::class, 'store'])->name("store-jadwal-pengganti");
+        Route::get('/absensi-anggota/{jadwal}/pengganti/{jadwal_pengganti}', [JadwalPenggantiController::class, 'show'])->name("detail-jadwal-pengganti");
     });
 
     Route::middleware('anggota_only')->group(function() {
