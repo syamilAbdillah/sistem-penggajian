@@ -37,6 +37,7 @@
       <li><a href="{{ route('potongan-gaji.index') }}">Potongan Gaji</a></li>
       <li><a href="{{ route('jadwal.index') }}">Jadwal</a></li>
       <li><a href="{{ route('list-absensi-anggota') }}">Absensi</a></li>
+      <li><a href="{{ route('laporan-gaji') }}">Laporan Gaji</a></li>
     </ul>
   
   </div>

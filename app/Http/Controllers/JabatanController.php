@@ -32,11 +32,13 @@ class JabatanController extends Controller
         $validated = $request->validate([
             'nama_jabatan' => 'string|required',
             'gaji' => 'required|numeric|gte:0',
+            'potongan' => 'required|numeric|gte:0',
         ]);
 
         $jabatan = new Jabatan();
         $jabatan->nama_jabatan = $validated['nama_jabatan'];
         $jabatan->gaji = $validated['gaji'];
+        $jabatan->potongan = $validated['potongan'];
         $jabatan->save();
 
         return redirect(route('jabatan.index'));
@@ -66,6 +68,7 @@ class JabatanController extends Controller
         $validated = $request->validate([
             'nama_jabatan' => 'string|required',
             'gaji' => 'numeric|gte:0',
+            'potongan' => 'required|numeric|gte:0',
 
         ]);
 

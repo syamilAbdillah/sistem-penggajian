@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
         $initJabatan = new Jabatan();
         $initJabatan->nama_jabatan = 'anggota';
         $initJabatan->gaji = 8000000;
+        $initJabatan->potongan = 100000;
         $initJabatan->save();
 
         $initUserAnggota = new User();

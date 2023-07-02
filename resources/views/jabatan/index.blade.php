@@ -8,6 +8,7 @@
 		        <th>no</th>
 		        <th>nama jabatan</th>
 		        <th>gaji</th>
+		        <th>potongan</th>
 		        <th>aksi</th>
 		      </tr>
 		    </thead>
@@ -17,6 +18,7 @@
 						<th>{{ $loop->iteration }}</th>
 						<td>{{ $jabatan->nama_jabatan }}</td>
 						<td>Rp. {{ number_format($jabatan->gaji, 0, ',', '.')  }}</td>
+						<td>Rp. {{ number_format($jabatan->potongan, 0, ',', '.')  }}</td>
 						<td>
 							<div class="space-x-2">
 								<a href="{{ route('jabatan.edit', ['jabatan' => $jabatan]) }}" class="btn">edit</a>

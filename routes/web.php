@@ -11,6 +11,7 @@ use App\Http\Controllers\JadwalAnggotaController;
 use App\Http\Controllers\JadwalHarianController;
 use App\Http\Controllers\JadwalLemburController;
 use App\Http\Controllers\JadwalPenggantiController;
+use App\Http\Controllers\LaporanGajiController;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\PotonganGajiController;
@@ -60,6 +61,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/absensi-anggota/{jadwal}/pengganti/create', [JadwalPenggantiController::class, 'create'])->name("create-jadwal-pengganti");
         Route::post('/absensi-anggota/{jadwal}/pengganti/create', [JadwalPenggantiController::class, 'store'])->name("store-jadwal-pengganti");
         Route::get('/absensi-anggota/{jadwal}/pengganti/{jadwal_pengganti}', [JadwalPenggantiController::class, 'show'])->name("detail-jadwal-pengganti");
+        Route::get('/laporan-gaji', [LaporanGajiController::class, 'index'])->name('laporan-gaji');
+        Route::post('/laporan-gaji', [LaporanGajiController::class, 'generate'])->name('generate-laporan-gaji');
     });
 
     Route::middleware('anggota_only')->group(function() {

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_jabatan');
             $table->double('gaji');
+            $table->double('potongan');
             $table->timestamps();
         });
     }
