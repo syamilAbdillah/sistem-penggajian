@@ -40,6 +40,7 @@
 						<th>tanggal</th>
 						<th>shift</th>
 						<th>keterangan</th>
+						<th>detail</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -66,6 +67,41 @@
 
 								@else
 									<span class="badge badge-lg">hadir</span>
+								@endif
+							</td>
+							<td>
+								@if($jadwal->absensi != null)
+									<label for="absensi-{{$jadwal->absensi->id}}" class="btn btn-link">detail</label>
+									<!-- Put this part before </body> tag -->
+									<input type="checkbox" class="modal-toggle" id="absensi-{{$jadwal->absensi->id}}" />
+									<label for="absensi-{{$jadwal->absensi->id}}" class="modal  cursor-pointer">
+									  <label class="modal-box mt-8 relative" for="">
+									    <h3 class="font-bold text-lg">detail absensi</h3>
+									    <div class="grid @if($jadwal->absensi->keterangan == 'hadir') grid-cols-2 @endif gap-4">
+									    	<x-form-control>
+									    		<x-label>keterangan</x-label>
+									    		<x-text-input value="{{ $jadwal->absensi->keterangan }}" readonly/>
+									    	</x-form-control>
+									    	@if($jadwal->absensi->keterangan == 'hadir')
+										    	<x-form-control>
+										    		<x-label>jam masuk</x-label>
+										    		@php
+										    		$jam_masuk = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
+										    		$jam_masuk->setTimestamp($jadwal->absensi->jam_masuk);
+										    		@endphp
+										    		<x-text-input value="{{ $jam_masuk->format('H:m:s') }}" readonly/>
+										    	</x-form-control>
+									    	@endif
+									    	<div class="col-span-2">
+									    		<x-label>bukti kehadiran</x-label>
+										    	<img src="{{ $jadwal->absensi->bukti_kehadiran }}" alt="bukti kehadiran">
+									    	</div>
+									    </div>
+									    <div class="flex justify-between items-center">
+								    		<label for="absensi-{{$jadwal->absensi->id}}" class="btn">tutup</label>
+									    </div>
+									  </label>
+									</label>
 								@endif
 							</td>
 						</tr>
