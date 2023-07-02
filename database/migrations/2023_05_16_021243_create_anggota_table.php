@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nik')->unique();
             $table->bigInteger('gaji');
-            $table->foreignId('jabatan_id')->constrained('jabatan', 'id')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreignId('user_id')->constrained('users', 'id')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('lokasi_id')->constrained('lokasi', 'id')->onUpdate('cascade')->onDelete('restrict');
+            $table->foreignId('jabatan_id');
+            $table->foreignId('user_id');
+            $table->foreignId('lokasi_id');
             $table->timestamps();
         });
     }

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('jadwal_pengganti', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('jadwal_id')->constrained('jadwal')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('anggota_id')->constrained('anggota')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('jadwal_id');
+            $table->foreignId('anggota_id');
             $table->timestamps();
         });
     }
