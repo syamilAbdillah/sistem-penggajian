@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsensiAnggota;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AnggotaJadwalController;
@@ -51,6 +52,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('anggota', AnggotaController::class);
         Route::resource('jadwal', JadwalController::class);
         Route::resource('jadwal-anggota', JadwalAnggotaController::class)->only('update', 'store');
+        Route::get('/absensi-anggota', [AbsensiAnggota::class, 'index'])->name('list-absensi-anggota');
     });
 
     Route::middleware('anggota_only')->group(function() {

@@ -75,7 +75,7 @@
 										@if($jadwal_anggota->absensi != null && $jadwal_anggota->absensi->keterangan == 'hadir')
 											<span class="badge badge-lg badge-neutral">hadir</span>
 										@else($jadwal_anggota->absensi != null && $jadwal_anggota->absensi->keterangan == 'sakit' || $jadwal_anggota->absensi->keterangan == 'izin')
-											<span class="badge badge-lg badge-warning">{{ $jadwal_anggota->absensi->kehadiran }}</span>
+											<span class="badge badge-lg badge-warning">{{ $jadwal_anggota->absensi->keterangan }}</span>
 										@endif
 									@else
 										<a href="#{{$jadwal_anggota->tanggal}}" class="btn">isi absensi</a>
@@ -148,19 +148,21 @@
 										<label for="absensi-{{$jadwal_anggota->absensi->id}}" class="modal  cursor-pointer">
 										  <label class="modal-box mt-8 relative" for="">
 										    <h3 class="font-bold text-lg">detail absensi</h3>
-										    <div class="grid grid-cols-2 gap-4">
+										    <div class="grid @if($jadwal_anggota->absensi->keterangan == 'hadir') grid-cols-2 @endif gap-4">
 										    	<x-form-control>
 										    		<x-label>keterangan</x-label>
 										    		<x-text-input value="{{ $jadwal_anggota->absensi->keterangan }}" readonly/>
 										    	</x-form-control>
-										    	<x-form-control>
-										    		<x-label>jam masuk</x-label>
-										    		@php
-										    		$jam_masuk = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
-										    		$jam_masuk->setTimestamp($jadwal_anggota->absensi->jam_masuk);
-										    		@endphp
-										    		<x-text-input value="{{ $jam_masuk->format('H:m:s') }}" readonly/>
-										    	</x-form-control>
+										    	@if($jadwal_anggota->absensi->keterangan == 'hadir')
+											    	<x-form-control>
+											    		<x-label>jam masuk</x-label>
+											    		@php
+											    		$jam_masuk = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
+											    		$jam_masuk->setTimestamp($jadwal_anggota->absensi->jam_masuk);
+											    		@endphp
+											    		<x-text-input value="{{ $jam_masuk->format('H:m:s') }}" readonly/>
+											    	</x-form-control>
+										    	@endif
 										    	<div class="col-span-2">
 										    		<x-label>bukti kehadiran</x-label>
 											    	<img src="{{ $jadwal_anggota->absensi->bukti_kehadiran }}" alt="bukti kehadiran">
