@@ -19,7 +19,7 @@ class AnggotaController extends Controller
      */
     public function index()
     {
-        $list_anggota = Anggota::with('user')->get();
+        $list_anggota = Anggota::with('user', 'jabatan')->get();
 
         return view('anggota.index', [
             'list_anggota' => $list_anggota,

@@ -31,10 +31,13 @@ class JabatanController extends Controller
     {
         $validated = $request->validate([
             'nama_jabatan' => 'string|required',
-            'gaji' => 'numeric|gte:0',
+            'gaji' => 'required|numeric|gte:0',
         ]);
 
-        Jabatan::create($validated);
+        $jabatan = new Jabatan();
+        $jabatan->nama_jabatan = $validated['nama_jabatan'];
+        $jabatan->gaji = $validated['gaji'];
+        $jabatan->save();
 
         return redirect(route('jabatan.index'));
     }

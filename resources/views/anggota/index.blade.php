@@ -10,6 +10,7 @@
 		        <th>nama</th>
 		        <th>nik</th>
 		        <th>email</th>
+		        <th>jabatan</th>
 		        <th>aksi</th>
 		      </tr>
 		    </thead>
@@ -20,6 +21,7 @@
 						<td>{{ $anggota->user->nama }}</td>
 						<td>{{ $anggota->nik }}</td>
 						<td>{{ $anggota->user->email }}</td>
+						<td>{{ $anggota->jabatan->nama_jabatan }}</td>
 						<td>
 							<div class="space-x-2">
 								<a href="{{ route('anggota.edit', ['anggotum' => $anggota]) }}" class="btn">edit</a>
