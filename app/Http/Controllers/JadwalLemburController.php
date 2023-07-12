@@ -6,6 +6,7 @@ use App\Models\AbsensiPengganti;
 use App\Models\Jadwal;
 use App\Models\JadwalPengganti;
 use App\Models\Periode;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 
 use DateTime, DateTimeZone, DateInterval;
@@ -51,11 +52,11 @@ class JadwalLemburController extends Controller
         $now = new DateTime('now', $timezone);
         $interval = DateInterval::createFromDateString('8 hours');
 
-        $filename = $req->file('bukti_kehadiran')->store();
+        $filename = $filename = Cloudinary::upload($req->file('bukti_kehadiran')->getRealPath())->getSecurePath();
 
         $ap = new AbsensiPengganti();
         $ap->jadwal_pengganti_id = $jadwal_pengganti->id;
-        $ap->bukti_kehadiran = "/storage/".$filename;
+        $ap->bukti_kehadiran = $filename;
         $ap->jam_masuk = $now->getTimestamp();
         $ap->jam_keluar = $now->add($interval)->getTimestamp();
         $ap->save();

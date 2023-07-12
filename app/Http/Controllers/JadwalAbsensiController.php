@@ -6,6 +6,7 @@ use App\Models\Absensi;
 use App\Models\Anggota;
 use App\Models\Periode;
 use App\Models\Jadwal;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use DateTimeZone, DateTime, DateInterval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,7 +46,7 @@ class JadwalAbsensiController extends Controller
         $user = Auth::user();
         $anggota = Anggota::where('user_id', $user->id)->first();
 
-        $filename = $request->file('bukti_kehadiran')->store();
+        $filename = Cloudinary::upload($request->file('bukti_kehadiran')->getRealPath())->getSecurePath();
 
         $timezone = new DateTimeZone('Asia/Jakarta');
         $now = new DateTime('now', $timezone);
@@ -55,7 +56,7 @@ class JadwalAbsensiController extends Controller
         $absensi->jadwal_id = $validated['jadwal_id'];
         $absensi->anggota_id = $anggota->id;
         $absensi->keterangan = $validated['keterangan'];
-        $absensi->bukti_kehadiran = "/storage/".$filename;
+        $absensi->bukti_kehadiran = $filename;
         $absensi->jam_masuk = $now->getTimestamp();
         $absensi->jam_keluar = $now->add($interval)->getTimestamp();
         $absensi->save();
