@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('potongan_gajis', function (Blueprint $table) {
             $table->id();
             $table->string('keterangan');
-            $table->foreignId('jabatan_id');
             $table->double('nilai_potongan');
             $table->timestamps();
         });

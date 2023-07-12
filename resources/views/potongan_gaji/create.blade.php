@@ -2,17 +2,7 @@
 	<a href="{{ route('potongan-gaji.index') }}" class="btn mb-6">daftar potongan gaji</a>
 	<form class="grid gap-4" action="{{ route('potongan-gaji.store') }}" method="post">
 		@csrf
-
-		<x-form-control>
-			<x-label>pilih jabatan</x-label>
-			<select name="jabatan_id" class="select select-bordered">
-				@forelse($list_jabatan as $j)
-					<option value="{{ $j->id }}">{{ $j->nama_jabatan }}</option>
-				@empty
-					<option>belum ada data</option>
-				@endforelse
-			</select>
-		</x-form-control>
+		
 		<x-form-control>
 			<x-label>keterangan</x-label>
 			<x-text-input

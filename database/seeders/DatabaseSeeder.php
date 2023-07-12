@@ -10,6 +10,7 @@ use App\Models\Lokasi;
 use App\Models\Anggota;
 use App\Models\Periode;
 use App\Models\Jadwal;
+use App\Models\PotonganGaji;
 use DateInterval;
 use DatePeriod;
 use DateTimeZone;
@@ -30,6 +31,11 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $init_potongan = new PotonganGaji();
+        $init_potongan->keterangan = "potongan tidak hadir";
+        $init_potongan->nilai_potongan = 150000;
+        $init_potongan->save();
 
         $init = new User();
         $init->nama = 'test admin';

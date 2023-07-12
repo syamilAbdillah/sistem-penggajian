@@ -16,9 +16,4 @@ class Jabatan extends Model
     {
         return $this->hasOne(Anggota::class, 'jabatan_id', 'id');
     }
-
-    public function potongan_gaji()
-    {
-        return $this->hasMany(PotonganGaji::class, 'jabatan_id', 'id');
-    }
 }
