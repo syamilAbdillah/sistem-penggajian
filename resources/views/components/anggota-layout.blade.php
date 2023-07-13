@@ -49,6 +49,7 @@
               <!-- Sidebar content here -->
               <li><a href="{{route('jadwal-absensi.index')}}">Jadwal</a></li>
               <li><a href="{{route('list-jadwal-lembur')}}">Jadwal lembur</a></li>
+              <li><a href="{{route('index-slip')}}">Slip Gaji</a></li>
             </ul>
           
           </div>

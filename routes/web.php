@@ -72,6 +72,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/jadwal-lembur/{jadwal_pengganti}/create', [JadwalLemburController::class, 'create'])->name('create-jadwal-lembur');
         Route::post('/jadwal-lembur/{jadwal_pengganti}', [JadwalLemburController::class, 'store'])->name('store-jadwal-lembur');
 
+        Route::get('/slip-gaji', [LaporanGajiController::class, 'index'])->name('index-slip');
+        Route::post('/slip-gaji', [LaporanGajiController::class, 'slip'])->name('generate-slip-gaji');
+
 
     });
 
