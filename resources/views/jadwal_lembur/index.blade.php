@@ -19,7 +19,7 @@
 			</div>
 		</form>
 
-		<div class="overflow-x-auto">
+		<div class="overflow-x-auto border rounded-lg">
 			<table class="table w-full">
 				<thead>
 					<tr>
@@ -31,7 +31,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach($list_jadwal_pengganti as $jp)
+					@forelse($list_jadwal_pengganti as $jp)
 						<tr>
 							<th>{{ $loop->iteration }}</th>
 							<td>{{ $jp->jadwal->anggota->user->nama }}</td>
@@ -65,7 +65,13 @@
 
 							</td>
 						</tr>
-					@endforeach
+					@empty
+						<tr>
+							<td colspan="5">
+								<h1 class="text-lg text-center text-base-200">belum ada data</h1>
+							</td>
+						</tr>
+					@endforelse
 				</tbody>
 			</table>
 		</div>

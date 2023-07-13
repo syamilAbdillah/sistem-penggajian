@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AbsensiPengganti;
+use App\Models\Anggota;
 use App\Models\Jadwal;
 use App\Models\JadwalPengganti;
 use App\Models\Periode;
@@ -10,6 +11,7 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 
 use DateTime, DateTimeZone, DateInterval;
+use Illuminate\Support\Facades\Auth;
 
 class JadwalLemburController extends Controller
 {
@@ -20,7 +22,8 @@ class JadwalLemburController extends Controller
         $list_periode = Periode::all();
 
         if ($periode != null) {
-            $list_jadwal_pengganti = JadwalPengganti::with('jadwal', 'jadwal.anggota', 'jadwal.anggota.user', 'anggota', 'absensi_pengganti')->get();
+            $anggota = Anggota::where('user_id', Auth::user()->id)->first();
+            $list_jadwal_pengganti = JadwalPengganti::with('jadwal', 'jadwal.anggota', 'jadwal.anggota.user', 'anggota', 'absensi_pengganti')->where('anggota_id', $anggota->id)->get();
 
             return view('jadwal_lembur.index', [
                 'list_periode' => $list_periode,

@@ -11,6 +11,9 @@
 					<option>belum ada data</option>
 				@endforelse
 			</select>
+			@error('periode_id')
+				<x-error-label>{{ $message }}</x-error-label>
+			@enderror
 		</x-form-control>
 
 		<div class="flex justify-end">
