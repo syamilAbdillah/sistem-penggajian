@@ -1,4 +1,4 @@
-<x-anggota-layout>
+<x-app-layout>
 	<div class="space-y-6">
 		
 		<div class="overflow-x-auto border rounded-lg">
@@ -33,4 +33,4 @@
 			</table>
 		</div>
 	</div>
-</x-anggota-layout>
+</x-app-layout>

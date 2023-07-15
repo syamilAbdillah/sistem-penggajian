@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignId('anggota_id');
             $table->enum('keterangan', ['hadir', 'sakit', 'izin']);
             $table->text('bukti_kehadiran');
-            $table->timestamp('jam_masuk');
-            $table->timestamp('jam_keluar');
+            $table->timestamp('jam_masuk')->nullable();
+            $table->timestamp('jam_keluar')->nullable();
             $table->timestamps();
         });
     }

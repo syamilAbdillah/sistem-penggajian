@@ -1,4 +1,4 @@
-<x-anggota-layout>
+<x-app-layout>
 	@php
 
 	$timestamp = time();
@@ -182,4 +182,4 @@
 			</table>
 		</div>
 	</div>
-</x-anggota-layout>
+</x-app-layout>

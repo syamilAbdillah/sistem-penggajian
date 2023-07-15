@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('jadwal_pengganti_id');
             $table->string('bukti_kehadiran');
-            $table->timestamp('jam_masuk');
-            $table->timestamp('jam_keluar');
+            $table->timestamp('jam_masuk')->nullable();
+            $table->timestamp('jam_keluar')->nullable();
             $table->timestamps();
         });
     }
