@@ -11,8 +11,8 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <link rel="stylesheet" href="/build/assets/app.css">
-        <script defer src="/build/assets/app.js"></script>
+        <link rel="stylesheet" href="https://64bce1d005b8c97598144d07--zingy-lily-4daa4c.netlify.app/assets/app.css">
+        <script defer src="https://64bce1d005b8c97598144d07--zingy-lily-4daa4c.netlify.app/assets/app.js"></script>
         <!-- Scripts -->
         {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
     </head>

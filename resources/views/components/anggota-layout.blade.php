@@ -21,7 +21,7 @@
             </label>
             
 
-            <a href="/" class="text-xl font-bold">PT. xxx</a>
+            <a href="/" class="text-xl font-bold">PT. Surya Wira Abadi Tribuana</a>
 
             <div class="dropdown dropdown-end">
                 <label tabindex="0" class="btn btn-outline hover:btn-ghost m-1">{{Auth::user()->nama}}</label>

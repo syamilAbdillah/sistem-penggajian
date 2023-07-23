@@ -39,7 +39,7 @@ font-mono   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 
             array_merge();
 
         @endphp
-        <h1>PT. xx</h1>
+        <h1>PT. Surya Wira Abadi Tribuana</h1>
         <h2>Slip gaji</h2>
         <p>Periode: {{ $periode->dari }} - {{ $periode->hingga }}</p>
 
