@@ -87,10 +87,9 @@
 										    	<x-form-control>
 										    		<x-label>jam masuk</x-label>
 										    		@php
-										    		$jam_masuk = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
-										    		$jam_masuk->setTimestamp($jadwal->absensi->jam_masuk);
+										    		$jam_masuk = new DateTime($jadwal->absensi->jam_masuk, new DateTimeZone('Asia/Jakarta'));
 										    		@endphp
-										    		<x-text-input value="{{ $jam_masuk->format('H:m:s') }}" readonly/>
+										    		<x-text-input value="{{ $jam_masuk->format('H:i:s') }}" readonly/>
 										    	</x-form-control>
 									    	@endif
 									    	<div class="col-span-2">

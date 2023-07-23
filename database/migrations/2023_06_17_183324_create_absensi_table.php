@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('absensi', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('jadwal_id');
+            $table->foreignId('jadwal_id')->constrained('jadwal', 'id')->onUpdate('cascade')->onDelete('restrict');
             $table->foreignId('anggota_id');
             $table->enum('keterangan', ['hadir', 'sakit', 'izin']);
             $table->text('bukti_kehadiran');
-            $table->timestamp('jam_masuk')->nullable();
-            $table->timestamp('jam_keluar')->nullable();
+            $table->datetime('jam_masuk');
+            $table->datetime('jam_keluar');
             $table->timestamps();
         });
     }

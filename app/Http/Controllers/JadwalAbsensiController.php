@@ -57,8 +57,8 @@ class JadwalAbsensiController extends Controller
         $absensi->anggota_id = $anggota->id;
         $absensi->keterangan = $validated['keterangan'];
         $absensi->bukti_kehadiran = $filename;
-        $absensi->jam_masuk = $now->getTimestamp();
-        $absensi->jam_keluar = $now->add($interval)->getTimestamp();
+        $absensi->jam_masuk = $now->format('Y-m-d H:i:s');
+        $absensi->jam_keluar = $now->add($interval)->format('Y-m-d H:i:s');
         $absensi->save();
 
         $jadwal = Jadwal::find($validated['jadwal_id']);

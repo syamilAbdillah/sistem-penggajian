@@ -13,9 +13,8 @@ return new class extends Migration
     {
         Schema::create('jabatan', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_jabatan');
+            $table->string('nama_jabatan')->unique();
             $table->double('gaji');
-            $table->double('potongan');
             $table->timestamps();
         });
     }

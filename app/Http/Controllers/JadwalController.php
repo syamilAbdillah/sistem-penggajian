@@ -7,6 +7,7 @@ use App\Models\Anggota;
 use App\Models\Periode;
 use DateTime, DateTimeZone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class JadwalController extends Controller
 {
@@ -35,13 +36,13 @@ class JadwalController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'bulan' => 'required|string'
+        $validator = Validator::make($request->all(), [
+            'bulan' => 'required|string',
         ]);
 
 
         $timezone = new DateTimeZone('Asia/Jakarta');
-        $strtime = strtotime($validated['bulan']);
+        $strtime = strtotime($request->input('bulan'));
         $date = date("Y-m-d", $strtime);
         $dateTime = new DateTime($date, $timezone);
 
@@ -50,6 +51,16 @@ class JadwalController extends Controller
 
         $dateTime->modify("last day of this month");
         $hingga = $dateTime->format("Y-m-d");
+
+
+        $exist = Periode::where('dari', $dari)->first();
+        $validator->after(function($validator) use ($exist) {
+            if($exist) {
+                $validator->errors()->add('bulan', 'bulan tersebut sudah dibuat, pilih bulan lain');
+            }
+        });
+
+        $validator->validate();        
 
 
         $periode = new Periode();
@@ -102,8 +113,25 @@ class JadwalController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Jadwal $jadwal)
+    public function destroy(Request $req,Periode $jadwal)
     {
-        //
+        $ok = true;
+        $childs = Jadwal::with('absensi')->where('periode_id', $jadwal->id)->get();
+        foreach ($childs as $j) {
+            if($j->absensi != null) {
+                $ok = false;
+                $req->session()->flash('error_hapus_jadwal', 'sudah ada anggota yang absen di bulan tsb');
+                return redirect()->back();
+            }   
+        }
+
+        if($ok) {
+            $jadwal->delete();
+            return redirect(route('jadwal.index'));
+        } else {
+            $req->session()->flash('error_hapus_jadwal', 'sudah ada anggota yang absen di bulan tsb');
+            return redirect()->back();
+        }
+
     }
 }

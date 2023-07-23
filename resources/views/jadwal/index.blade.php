@@ -2,6 +2,14 @@
 	<div class="space-y-6">
 		<a href="{{ route('jadwal.create') }}" class="btn">tambah jadwal bulanan</a>
 
+		@if (Session::get("error_hapus_jadwal"))
+	      <div class="alert alert-error">
+	         {{ Session::get("error_hapus_jadwal") }}
+	      </div>
+		@endif
+
+
+
 		<div class="overflow-x-auto border rounded-lg">
 		  <table class="table w-full">
 		    <thead>
@@ -19,7 +27,11 @@
 						<td>
 							<div class="flex gap-2 items-center">
 								<a href="{{ route('jadwal.show', ['jadwal' => $jadwal]) }}" class="btn btn-primary">atur jadwal</a>
-								<a href="#" class="btn btn-error">hapus</a>
+								<form method="post" action="{{ route('jadwal.destroy', ['jadwal' => $jadwal]) }}">
+									@csrf
+									@method('DELETE')
+									<button type="submit" class="btn btn-error">hapus</button>
+								</form>
 							</div>
 						</td>
 					</tr>

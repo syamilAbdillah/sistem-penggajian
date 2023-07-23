@@ -30,7 +30,7 @@ class LokasiController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_lokasi' => 'string|required',
+            'nama_lokasi' => 'string|required|unique:'.Lokasi::class,
             'alamat' => 'string|required'
         ]);
 

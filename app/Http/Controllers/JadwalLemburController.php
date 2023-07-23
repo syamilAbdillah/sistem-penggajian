@@ -60,8 +60,8 @@ class JadwalLemburController extends Controller
         $ap = new AbsensiPengganti();
         $ap->jadwal_pengganti_id = $jadwal_pengganti->id;
         $ap->bukti_kehadiran = $filename;
-        $ap->jam_masuk = $now->getTimestamp();
-        $ap->jam_keluar = $now->add($interval)->getTimestamp();
+        $ap->jam_masuk = $now->format('Y-m-d H:i:s');
+        $ap->jam_keluar = $now->add($interval)->format('Y-m-d H:i:s');
         $ap->save();
 
         return redirect(route('list-jadwal-lembur'));

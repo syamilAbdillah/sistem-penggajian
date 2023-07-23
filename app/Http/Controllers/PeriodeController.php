@@ -8,6 +8,7 @@ use App\Models\Anggota;
 use App\Models\JadwalHarian;
 use App\Models\Periode;
 use DateTime;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class PeriodeController extends Controller
@@ -40,6 +41,10 @@ class PeriodeController extends Controller
         // TODO:
         //      - should be validated !!
 
+        $validator = Validator::make($req->all(), [
+            'bulan' => 'required',
+        ]);
+
         $date = date("Y-m-d", strtotime($request->input('bulan')));
         $dateTime = new DateTime($date);
 
@@ -49,6 +54,14 @@ class PeriodeController extends Controller
         $dateTime->modify("last day of this month");
         $hingga = $dateTime->format("Y-m-d");
 
+        $exist = Periode::where('dari', $dari)->first();
+        $validator->after(function($validator) use ($exist) {
+            if($exist) {
+                $validator->errors()->add('bulan', 'bulan tersebut sudah dibuat, pilih bulan lain');
+            }
+        });
+
+        $validator->validate();
 
         $periode = new Periode();
         $periode->dari = $dari;

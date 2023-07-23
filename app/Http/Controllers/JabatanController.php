@@ -30,15 +30,13 @@ class JabatanController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_jabatan' => 'string|required',
+            'nama_jabatan' => 'string|required|unique:'.Jabatan::class,
             'gaji' => 'required|numeric|gte:0',
-            'potongan' => 'required|numeric|gte:0',
         ]);
 
         $jabatan = new Jabatan();
         $jabatan->nama_jabatan = $validated['nama_jabatan'];
         $jabatan->gaji = $validated['gaji'];
-        $jabatan->potongan = $validated['potongan'];
         $jabatan->save();
 
         return redirect(route('jabatan.index'));
@@ -65,11 +63,26 @@ class JabatanController extends Controller
      */
     public function update(Request $request, Jabatan $jabatan)
     {
+        $validated = [];
+        if($request->input('nama_jabatan') == $jabatan->nama_jabatan) {
+
+            $validated = $request->validate([
+                'nama_jabatan' => 'string|required',
+                'gaji' => 'numeric|gte:0',
+            ]);
+
+        } else {
+
+            $validated = $request->validate([
+                'nama_jabatan' => 'string|required|unique:'.Jabatan::class,
+                'gaji' => 'numeric|gte:0',
+            ]);
+
+        }
+
         $validated = $request->validate([
             'nama_jabatan' => 'string|required',
             'gaji' => 'numeric|gte:0',
-            'potongan' => 'required|numeric|gte:0',
-
         ]);
 
         $jabatan->nama_jabatan = $validated['nama_jabatan'];
