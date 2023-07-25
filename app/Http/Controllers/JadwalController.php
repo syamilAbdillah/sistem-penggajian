@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jadwal;
+use App\Models\JadwalPengganti;
+use App\Models\Absensi;
 use App\Models\Anggota;
 use App\Models\Periode;
 use DateTime, DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class JadwalController extends Controller
 {
@@ -116,9 +119,9 @@ class JadwalController extends Controller
     public function destroy(Request $req,Periode $jadwal)
     {
         $ok = true;
-        $childs = Jadwal::with('absensi')->where('periode_id', $jadwal->id)->get();
+        $childs = Jadwal::with('absensi', 'jadwal_pengganti')->where('periode_id', $jadwal->id)->get();
         foreach ($childs as $j) {
-            if($j->absensi != null) {
+            if($j->absensi != null || $j->jadwal_pengganti != null) {
                 $ok = false;
                 $req->session()->flash('error_hapus_jadwal', 'sudah ada anggota yang absen di bulan tsb');
                 return redirect()->back();
@@ -126,6 +129,7 @@ class JadwalController extends Controller
         }
 
         if($ok) {
+            DB::table('jadwal')->where('periode_id', $jadwal->id)->delete();
             $jadwal->delete();
             return redirect(route('jadwal.index'));
         } else {

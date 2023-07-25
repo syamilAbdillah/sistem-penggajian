@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('jadwal', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('periode_id')->constrained('periode', 'id')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('periode_id');
             $table->foreignId('anggota_id');
             $table->enum('shift', ['pagi', 'siang', 'malam']);
             $table->date('tanggal');
