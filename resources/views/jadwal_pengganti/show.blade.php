@@ -64,8 +64,7 @@
 				<td>
 					@if($absensi_pengganti != null) 
 						@php
-							$jam_masuk = new DateTime('now', $timezone);
-							$jam_masuk->setTimestamp($absensi_pengganti->jam_masuk);
+							$jam_masuk = new DateTime($absensi_pengganti->jam_masuk, $timezone);
 						@endphp
 						{{ $jam_masuk->format('H:m:s') }}
 					@endif
